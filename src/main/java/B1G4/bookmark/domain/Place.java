@@ -1,5 +1,6 @@
 package B1G4.bookmark.domain;
 
+import B1G4.bookmark.domain.common.BaseEntity;
 import B1G4.bookmark.domain.enums.*;
 import jakarta.persistence.*;
 import lombok.*;
@@ -12,7 +13,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor
-public class Place {
+public class Place extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

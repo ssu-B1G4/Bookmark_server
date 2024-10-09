@@ -1,5 +1,6 @@
 package B1G4.bookmark.domain;
 
+import B1G4.bookmark.domain.common.BaseEntity;
 import B1G4.bookmark.domain.enums.Noise;
 import B1G4.bookmark.domain.enums.Outlet;
 import B1G4.bookmark.domain.enums.Size;
@@ -16,7 +17,7 @@ import java.util.List;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Builder
 @AllArgsConstructor
-public class Review {
+public class Review extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
