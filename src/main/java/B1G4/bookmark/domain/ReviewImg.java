@@ -1,5 +1,6 @@
 package B1G4.bookmark.domain;
 
+import B1G4.bookmark.domain.common.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -8,7 +9,7 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @Entity
-public class ReviewImg {
+public class ReviewImg extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

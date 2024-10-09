@@ -1,5 +1,6 @@
 package B1G4.bookmark.domain;
 
+import B1G4.bookmark.domain.common.BaseEntity;
 import B1G4.bookmark.domain.enums.Mood;
 import jakarta.persistence.*;
 import lombok.*;
@@ -7,7 +8,7 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Member {
+public class Member extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
