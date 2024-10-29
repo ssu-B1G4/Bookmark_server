@@ -17,3 +17,8 @@ spring:
         hbm2ddl:
           auto: update
         default_batch_fetch_size: 1000
+
+naver:
+  url: ${NAVER_MAP_URL}
+  client-id: ${NAVER_CLIENT_ID}
+  client-secret: ${NAVER_CLIENT_SECRET}
