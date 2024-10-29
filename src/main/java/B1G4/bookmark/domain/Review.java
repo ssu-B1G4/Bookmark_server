@@ -49,6 +49,12 @@ public class Review extends BaseEntity {
     @JoinColumn(name = "place_id")
     private Place place;
 
+    // member 설정
+    @Setter
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "member_id")
+    private Member member;
+
     @OneToMany(mappedBy = "review", cascade = CascadeType.ALL)
     private List<ReviewImg> reviewImgs = new ArrayList<>();
 
