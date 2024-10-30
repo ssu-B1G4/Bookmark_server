@@ -1,5 +1,13 @@
 package B1G4.bookmark.service.PlaceService;
 
+import B1G4.bookmark.converter.PlaceConverter;
+import B1G4.bookmark.domain.Member;
+import B1G4.bookmark.domain.Place;
+import B1G4.bookmark.repository.PlaceRepository;
+import B1G4.bookmark.service.MemberService.MemberServiceImpl;
+import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
+import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
+import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -20,6 +28,10 @@ public class PlaceServiceImpl implements PlaceService{
     private String clientId;
     @Value("${NAVER_CLIENT_SECRET}")
     private String clientSecret;
+
+    private final PlaceRepository placeRepository;
+    private final MemberServiceImpl memberService;
+    @Override
     public Map<String, Double> getGeoData(String address) {
         try{
             RestTemplate restTemplate = new RestTemplate();
@@ -59,5 +71,20 @@ public class PlaceServiceImpl implements PlaceService{
         }catch (Exception e) {
             throw new RuntimeException("Error :" + e.getMessage());
         }
+    }
+    @Override
+    public Place createPlace(PlaceRequestDTO.PlaceCreateDTO request, Double longitude, Double latitude) {
+        Place place = PlaceConverter.toPlace(request, longitude, latitude);
+        placeRepository.save(place);
+        return place;
+    }
+
+    @Override
+    public PlaceResponseDTO.PlacePreviewDTO previewPlace(Long placeId, Member member) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(()-> new EntityNotFoundException("Place가 없습니다."));
+        Boolean isSaved = memberService.isSaved(member, place);
+        PlaceResponseDTO.PlacePreviewDTO response = PlaceConverter.toPlacePreviewDTO(place, isSaved);
+        return response;
     }
 }

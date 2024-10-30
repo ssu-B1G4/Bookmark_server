@@ -18,4 +18,16 @@ public class PlaceConverter {
                 .placeId(place.getId())
                 .build();
     }
+
+    public static PlaceResponseDTO.PlacePreviewDTO toPlacePreviewDTO(Place place, Boolean isSaved) {
+        return PlaceResponseDTO.PlacePreviewDTO.builder()
+                .isSaved(isSaved)
+                .mood1(place.getMood1().getViewName())
+                .mood2(place.getMood2().getViewName())
+                .size(place.getSize().getViewName())
+                .outlet(place.getOutlet().getViewName())
+                .name(place.getName())
+                .wifi(place.getWifi().getViewName())
+                .build();
+    }
 }
