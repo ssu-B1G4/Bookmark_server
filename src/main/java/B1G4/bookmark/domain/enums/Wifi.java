@@ -13,4 +13,8 @@ public enum Wifi {
     Wifi(String wifi) {
         this.wifi = wifi;
     }
+
+    public String getViewName() {
+        return wifi;
+    }
 }

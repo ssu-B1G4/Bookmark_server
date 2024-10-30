@@ -13,4 +13,7 @@ public enum Outlet {
     Outlet(String outlet) {
         this.outlet = outlet;
     }
+    public String getViewName() {
+        return outlet;
+    }
 }
