@@ -28,7 +28,29 @@ public class PlaceResponseDTO {
         Boolean isSaved;
         String mood1;
         String mood2;
-        //TODO: 이미지 추가 후 추가
-        List<String> imgUrls;
+        List<String> placeImgList;
+    }
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PlaceDetailDTO {
+        Long placeId;
+        List<String> placeImgList;
+        String name;
+        String address;
+        Boolean isSaved;
+        String category;
+        String outlet;
+        String size;
+        String wifi;
+        String noise;
+        String mood1;
+        String mood2;
+        Double longitude;
+        Double latitude;
+        String phone;
+        String time;
+        String url;
     }
 }

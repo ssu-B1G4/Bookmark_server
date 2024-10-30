@@ -3,6 +3,7 @@ package B1G4.bookmark.service.PlaceService;
 import B1G4.bookmark.converter.PlaceConverter;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
+import B1G4.bookmark.repository.PlaceImgRepository;
 import B1G4.bookmark.repository.PlaceRepository;
 import B1G4.bookmark.service.MemberService.MemberServiceImpl;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
@@ -31,6 +32,7 @@ public class PlaceServiceImpl implements PlaceService{
 
     private final PlaceRepository placeRepository;
     private final MemberServiceImpl memberService;
+    private final PlaceImgRepository placeImgRepository;
     @Override
     public Map<String, Double> getGeoData(String address) {
         try{
@@ -84,7 +86,18 @@ public class PlaceServiceImpl implements PlaceService{
         Place place = placeRepository.findById(placeId)
                 .orElseThrow(()-> new EntityNotFoundException("Place가 없습니다."));
         Boolean isSaved = memberService.isSaved(member, place);
-        PlaceResponseDTO.PlacePreviewDTO response = PlaceConverter.toPlacePreviewDTO(place, isSaved);
+        List<String> placeImgList = placeImgRepository.findAllUrlByPlace(place);
+        PlaceResponseDTO.PlacePreviewDTO response = PlaceConverter.toPlacePreviewDTO(place, isSaved, placeImgList);
+        return response;
+    }
+
+    @Override
+    public PlaceResponseDTO.PlaceDetailDTO detailPlace(Long placeId, Member member) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(()-> new EntityNotFoundException("Place가 없습니다."));
+        Boolean isSaved = memberService.isSaved(member, place);
+        List<String> placeImgList = placeImgRepository.findAllUrlByPlace(place);
+        PlaceResponseDTO.PlaceDetailDTO response = PlaceConverter.toPlaceDetailDTO(place, isSaved, placeImgList);
         return response;
     }
 }

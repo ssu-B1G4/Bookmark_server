@@ -4,6 +4,8 @@ import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
 
+import java.util.List;
+
 public class PlaceConverter {
     public static Place toPlace(PlaceRequestDTO.PlaceCreateDTO request, Double longitude, Double latitude) {
         return Place.builder()
@@ -19,7 +21,7 @@ public class PlaceConverter {
                 .build();
     }
 
-    public static PlaceResponseDTO.PlacePreviewDTO toPlacePreviewDTO(Place place, Boolean isSaved) {
+    public static PlaceResponseDTO.PlacePreviewDTO toPlacePreviewDTO(Place place, Boolean isSaved, List<String> placeImgList) {
         return PlaceResponseDTO.PlacePreviewDTO.builder()
                 .placeId(place.getId())
                 .isSaved(isSaved)
@@ -29,6 +31,29 @@ public class PlaceConverter {
                 .outlet(place.getOutlet().getViewName())
                 .name(place.getName())
                 .wifi(place.getWifi().getViewName())
+                .placeImgList(placeImgList)
+                .build();
+    }
+    public static PlaceResponseDTO.PlaceDetailDTO toPlaceDetailDTO(Place place, Boolean isSaved, List<String> placeImgList) {
+        return PlaceResponseDTO.PlaceDetailDTO.builder()
+                .placeId(place.getId())
+                .size(place.getSize().getViewName())
+                .wifi(place.getWifi().getViewName())
+                .mood1(place.getMood1().getViewName())
+                .mood2(place.getMood2().getViewName())
+                .url(place.getUrl())
+                .phone(place.getPhone())
+                .name(place.getName())
+                .noise(place.getNoise().getViewName())
+                .placeImgList(placeImgList)
+                .time(place.getTime())
+                .category(place.getCategory().getViewName())
+                .longitude(place.getLongitude())
+                .latitude(place.getLatitude())
+                .phone(place.getPhone())
+                .isSaved(isSaved)
+                .address(place.getAddress())
+                .outlet(place.getOutlet().getViewName())
                 .build();
     }
 }

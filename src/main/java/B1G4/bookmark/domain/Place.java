@@ -54,6 +54,9 @@ public class Place extends BaseEntity {
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
+    private List<PlaceImg> placeImgList = new ArrayList<>();
+
     @OneToOne
     private Congestion congestion;
 
