@@ -19,7 +19,7 @@ public class PlaceConverter {
                 .build();
     }
 
-    public static PlaceResponseDTO.PlacePreviewDTO toPlacePreviewDTO(Place place, Boolean isSaved) {
+    public static PlaceResponseDTO.PlacePreviewDTO toPlacePreviewDTO(Place place, Boolean isSaved, List<String> placeImgList) {
         return PlaceResponseDTO.PlacePreviewDTO.builder()
                 .placeId(place.getId())
                 .isSaved(isSaved)

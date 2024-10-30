@@ -84,7 +84,8 @@ public class PlaceServiceImpl implements PlaceService{
         Place place = placeRepository.findById(placeId)
                 .orElseThrow(()-> new EntityNotFoundException("Place가 없습니다."));
         Boolean isSaved = memberService.isSaved(member, place);
-        PlaceResponseDTO.PlacePreviewDTO response = PlaceConverter.toPlacePreviewDTO(place, isSaved);
+        List<String> placeImgList = placeImgRepository.findAllUrlByPlace(place);
+        PlaceResponseDTO.PlacePreviewDTO response = PlaceConverter.toPlacePreviewDTO(place, isSaved, placeImgList);
         return response;
     }
 
