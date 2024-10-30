@@ -50,7 +50,6 @@ public class Place extends BaseEntity {
 
     private Double latitude;
     private Double longitude;
-    private String profileImgUrl; // 대표이미지
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
