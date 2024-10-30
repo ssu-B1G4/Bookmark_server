@@ -40,13 +40,16 @@ public class Place extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Mood mood2;
 
+    @Enumerated(EnumType.STRING)
+    private Category category;
+
     private String phone;
     private String time;
     private String url;
     private String summary;
 
-    private double latitude;
-    private double longitude;
+    private Double latitude;
+    private Double longitude;
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
