@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class PlaceServiceImpl {
+public class PlaceServiceImpl implements PlaceService{
     @Value("${NAVER_MAP_URL}")
     private String apiUrl;
     @Value("${NAVER_CLIENT_ID}")
