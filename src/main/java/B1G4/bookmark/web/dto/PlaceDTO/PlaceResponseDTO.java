@@ -31,4 +31,27 @@ public class PlaceResponseDTO {
         //TODO: 이미지 추가 후 추가
         List<String> imgUrls;
     }
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PlaceDetailDTO {
+        Long placeId;
+        String profileImgUrl; // 대표 이미지 url
+        String name;
+        String address;
+        Boolean isSaved;
+        String category;
+        String outlet;
+        String size;
+        String wifi;
+        String noise;
+        String mood1;
+        String mood2;
+        Double longitude;
+        Double latitude;
+        String phone;
+        String time;
+        String url;
+    }
 }

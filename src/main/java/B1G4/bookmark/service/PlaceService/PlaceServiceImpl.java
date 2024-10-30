@@ -87,4 +87,13 @@ public class PlaceServiceImpl implements PlaceService{
         PlaceResponseDTO.PlacePreviewDTO response = PlaceConverter.toPlacePreviewDTO(place, isSaved);
         return response;
     }
+
+    @Override
+    public PlaceResponseDTO.PlaceDetailDTO detailPlace(Long placeId, Member member) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(()-> new EntityNotFoundException("Place가 없습니다."));
+        Boolean isSaved = memberService.isSaved(member, place);
+        PlaceResponseDTO.PlaceDetailDTO response = PlaceConverter.toPlaceDetailDTO(place, isSaved);
+        return response;
+    }
 }

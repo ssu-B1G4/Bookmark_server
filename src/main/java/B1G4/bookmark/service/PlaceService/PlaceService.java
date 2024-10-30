@@ -11,4 +11,5 @@ public interface PlaceService {
     Map<String, Double> getGeoData(String address);
     Place createPlace(PlaceRequestDTO.PlaceCreateDTO request, Double longitude, Double latitude);
     PlaceResponseDTO.PlacePreviewDTO previewPlace(Long placeId, Member member);
+    PlaceResponseDTO.PlaceDetailDTO detailPlace(Long placeId, Member member);
 }

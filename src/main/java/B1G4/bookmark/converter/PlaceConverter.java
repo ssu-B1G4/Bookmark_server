@@ -31,4 +31,26 @@ public class PlaceConverter {
                 .wifi(place.getWifi().getViewName())
                 .build();
     }
+    public static PlaceResponseDTO.PlaceDetailDTO toPlaceDetailDTO(Place place, Boolean isSaved) {
+        return PlaceResponseDTO.PlaceDetailDTO.builder()
+                .placeId(place.getId())
+                .size(place.getSize().getViewName())
+                .wifi(place.getWifi().getViewName())
+                .mood1(place.getMood1().getViewName())
+                .mood2(place.getMood2().getViewName())
+                .url(place.getUrl())
+                .phone(place.getPhone())
+                .name(place.getName())
+                .noise(place.getNoise().getViewName())
+                .profileImgUrl(place.getProfileImgUrl()) //대표이미지
+                .time(place.getTime())
+                .category(place.getCategory().getViewName())
+                .longitude(place.getLongitude())
+                .latitude(place.getLatitude())
+                .phone(place.getPhone())
+                .isSaved(isSaved)
+                .address(place.getAddress())
+                .outlet(place.getOutlet().getViewName())
+                .build();
+    }
 }
