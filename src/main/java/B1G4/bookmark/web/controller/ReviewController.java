@@ -3,10 +3,9 @@ package B1G4.bookmark.web.controller;
 import B1G4.bookmark.apiPayload.BaseResponse;
 import B1G4.bookmark.apiPayload.code.status.SuccessStatus;
 import B1G4.bookmark.web.dto.ReviewDTO.ReviewRequestDTO;
-import B1G4.bookmark.service.ReviewServiceImpl;
+import B1G4.bookmark.service.ReviewService.ReviewServiceImpl;
 import B1G4.bookmark.web.dto.ReviewDTO.ReviewResponseDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestPart;
@@ -21,6 +20,7 @@ public class ReviewController {
 
     private final ReviewServiceImpl reviewServiceImpl;
 
+    // memberId 파라미터로 받았는데 로그인 구현되면 jwt에서 뽑아오는걸로 바꿀게요
     @PostMapping(value = "/reviews/{placeId}/{memberId}", consumes = "multipart/form-data")
     public BaseResponse<ReviewResponseDTO> createReview(
             @PathVariable Long placeId,

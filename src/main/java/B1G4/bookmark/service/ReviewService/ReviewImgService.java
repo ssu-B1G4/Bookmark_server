@@ -1,4 +1,4 @@
-package B1G4.bookmark.service;
+package B1G4.bookmark.service.ReviewService;
 
 import B1G4.bookmark.domain.Review;
 import org.springframework.web.multipart.MultipartFile;

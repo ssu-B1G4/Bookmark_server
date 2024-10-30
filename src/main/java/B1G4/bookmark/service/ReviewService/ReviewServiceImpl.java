@@ -1,4 +1,4 @@
-package B1G4.bookmark.service;
+package B1G4.bookmark.service.ReviewService;
 
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
