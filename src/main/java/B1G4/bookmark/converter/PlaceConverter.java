@@ -21,6 +21,7 @@ public class PlaceConverter {
 
     public static PlaceResponseDTO.PlacePreviewDTO toPlacePreviewDTO(Place place, Boolean isSaved) {
         return PlaceResponseDTO.PlacePreviewDTO.builder()
+                .placeId(place.getId())
                 .isSaved(isSaved)
                 .mood1(place.getMood1().getViewName())
                 .mood2(place.getMood2().getViewName())

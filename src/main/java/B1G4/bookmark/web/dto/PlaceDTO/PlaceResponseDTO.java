@@ -20,6 +20,7 @@ public class PlaceResponseDTO {
     @NoArgsConstructor
     @AllArgsConstructor
     public static class PlacePreviewDTO {
+        Long placeId;
         String name;
         String size;
         String outlet;
