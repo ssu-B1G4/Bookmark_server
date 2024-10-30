@@ -21,4 +21,9 @@ public class ReviewImg extends BaseEntity {
     @JoinColumn(name = "review_id")
     private Review review;
 
+    public ReviewImg(Review review, String url) {
+        this.review = review;
+        this.url = url;
+    }
+
 }
