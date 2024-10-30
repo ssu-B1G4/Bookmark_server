@@ -5,7 +5,7 @@ import B1G4.bookmark.apiPayload.code.status.SuccessStatus;
 import B1G4.bookmark.converter.PlaceConverter;
 import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.repository.PlaceRepository;
-import B1G4.bookmark.service.PlaceService;
+import B1G4.bookmark.service.PlaceService.PlaceServiceImpl;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +19,7 @@ import java.util.Map;
 @RestController
 @RequiredArgsConstructor
 public class PlaceController {
-    private final PlaceService placeService;
+    private final PlaceServiceImpl placeService;
     private final PlaceRepository placeRepository;
     @PostMapping("/places")
     public BaseResponse<PlaceResponseDTO.PlaceIdDTO> getGeoData(@RequestBody PlaceRequestDTO.PlaceCreateDTO request) {

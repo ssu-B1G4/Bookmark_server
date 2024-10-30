@@ -1,4 +1,4 @@
-package B1G4.bookmark.service;
+package B1G4.bookmark.service.PlaceService;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -13,7 +13,7 @@ import java.util.Map;
 
 @Service
 @RequiredArgsConstructor
-public class PlaceService {
+public class PlaceServiceImpl {
     @Value("${NAVER_MAP_URL}")
     private String apiUrl;
     @Value("${NAVER_CLIENT_ID}")
