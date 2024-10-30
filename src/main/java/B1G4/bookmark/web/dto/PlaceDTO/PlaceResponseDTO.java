@@ -36,7 +36,7 @@ public class PlaceResponseDTO {
     @AllArgsConstructor
     public static class PlaceDetailDTO {
         Long placeId;
-        String profileImgUrl; // 대표 이미지 url
+        List<String> placeImgList;
         String name;
         String address;
         Boolean isSaved;

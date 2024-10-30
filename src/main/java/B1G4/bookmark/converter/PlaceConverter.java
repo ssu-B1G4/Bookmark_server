@@ -4,6 +4,8 @@ import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
 
+import java.util.List;
+
 public class PlaceConverter {
     public static Place toPlace(PlaceRequestDTO.PlaceCreateDTO request, Double longitude, Double latitude) {
         return Place.builder()
@@ -29,9 +31,10 @@ public class PlaceConverter {
                 .outlet(place.getOutlet().getViewName())
                 .name(place.getName())
                 .wifi(place.getWifi().getViewName())
+                .placeImgList(placeImgList)
                 .build();
     }
-    public static PlaceResponseDTO.PlaceDetailDTO toPlaceDetailDTO(Place place, Boolean isSaved) {
+    public static PlaceResponseDTO.PlaceDetailDTO toPlaceDetailDTO(Place place, Boolean isSaved, List<String> placeImgList) {
         return PlaceResponseDTO.PlaceDetailDTO.builder()
                 .placeId(place.getId())
                 .size(place.getSize().getViewName())
@@ -42,7 +45,7 @@ public class PlaceConverter {
                 .phone(place.getPhone())
                 .name(place.getName())
                 .noise(place.getNoise().getViewName())
-                .profileImgUrl(place.getProfileImgUrl()) //대표이미지
+                .placeImgList(placeImgList)
                 .time(place.getTime())
                 .category(place.getCategory().getViewName())
                 .longitude(place.getLongitude())
