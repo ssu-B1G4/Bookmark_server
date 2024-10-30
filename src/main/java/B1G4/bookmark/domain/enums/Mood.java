@@ -16,5 +16,8 @@ public enum Mood {
     Mood(String mood) {
         this.mood = mood;
     }
+    public String getViewName() {
+        return mood;
+    }
 }
 

@@ -13,4 +13,7 @@ public enum Size {
     Size(String size) {
         this.size = size;
     }
+    public String getViewName() {
+        return size;
+    }
 }
