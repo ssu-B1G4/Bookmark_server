@@ -12,4 +12,7 @@ public enum Category {
     private Category(String category) {
         this.category = category;
     }
+    public String getViewName() {
+        return category;
+    }
 }

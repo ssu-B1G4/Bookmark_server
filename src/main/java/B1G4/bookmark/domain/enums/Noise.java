@@ -13,4 +13,7 @@ public enum Noise {
     Noise(String noise){
         this.noise = noise;
     }
+    public String getViewName() {
+        return noise;
+    }
 }
