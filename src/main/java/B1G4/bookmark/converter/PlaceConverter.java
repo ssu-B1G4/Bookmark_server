@@ -32,6 +32,9 @@ public class PlaceConverter {
                 .name(place.getName())
                 .wifi(place.getWifi().getViewName())
                 .placeImgList(placeImgList)
+                .reviewCount(place.getReviewCount())
+                .longitude(place.getLongitude())
+                .latitude(place.getLatitude())
                 .build();
     }
     public static PlaceResponseDTO.PlaceDetailDTO toPlaceDetailDTO(Place place, Boolean isSaved, List<String> placeImgList) {
