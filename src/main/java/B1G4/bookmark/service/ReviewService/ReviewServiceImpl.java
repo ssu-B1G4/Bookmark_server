@@ -46,6 +46,10 @@ public class ReviewServiceImpl implements ReviewService{
         reviewRepository.save(review);
 
         reviewImgServiceImpl.uploadImage(review, images);
+
+        //리뷰 등록시 공간 리뷰개수 +1
+        place.addReviewCount();
+        placeRepository.save(place);
         return review.getId();
     }
 }

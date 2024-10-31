@@ -18,6 +18,7 @@ public enum SuccessStatus implements BaseCode {
     PLACE_CREATE_OK(HttpStatus.OK, "PLACE2001", "공간 등록이 완료되었습니다."),
     PLACE_PREVIEW_OK(HttpStatus.OK, "PLACE2002", "공간 미리보기가 완료되었습니다."),
     PLACE_DETAIL_OK(HttpStatus.OK, "PLACE2003", "공간 상세보기가 완료되었습니다."),
+    NEARBY_PLACE_OK(HttpStatus.OK, "PLACE2004","근처 공간 조회가 완료되었습니다."),
     ;
 
     private final HttpStatus httpStatus;

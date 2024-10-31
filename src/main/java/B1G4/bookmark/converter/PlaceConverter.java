@@ -1,10 +1,15 @@
 package B1G4.bookmark.converter;
 
+import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
+import B1G4.bookmark.repository.PlaceImgRepository;
+import B1G4.bookmark.service.MemberService.MemberServiceImpl;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlaceConverter {
     public static Place toPlace(PlaceRequestDTO.PlaceCreateDTO request, Double longitude, Double latitude) {
@@ -32,6 +37,9 @@ public class PlaceConverter {
                 .name(place.getName())
                 .wifi(place.getWifi().getViewName())
                 .placeImgList(placeImgList)
+                .reviewCount(place.getReviewCount())
+                .longitude(place.getLongitude())
+                .latitude(place.getLatitude())
                 .build();
     }
     public static PlaceResponseDTO.PlaceDetailDTO toPlaceDetailDTO(Place place, Boolean isSaved, List<String> placeImgList) {
@@ -54,6 +62,23 @@ public class PlaceConverter {
                 .isSaved(isSaved)
                 .address(place.getAddress())
                 .outlet(place.getOutlet().getViewName())
+                .build();
+    }
+    public static PlaceResponseDTO.PlacePreviewListDTO toPlacePreviewList(Page<Place> placeList, Member member, MemberServiceImpl memberService, PlaceImgRepository placeImgRepository) {
+        List<PlaceResponseDTO.PlacePreviewDTO> placePreviewDTOList = placeList.stream()
+                .map(place -> toPlacePreviewDTO(
+                        place,
+                        memberService.isSaved(member, place),
+                        placeImgRepository.findAllUrlByPlace(place)
+                ))
+                .collect(Collectors.toList());
+        return PlaceResponseDTO.PlacePreviewListDTO.builder()
+                .placePreviewDTOList(placePreviewDTOList)
+                .listSize(placeList.getSize())
+                .isFirst(placeList.isFirst())
+                .isLast(placeList.isLast())
+                .totalElements(placeList.getTotalElements())
+                .totalPage(placeList.getTotalPages())
                 .build();
     }
 }
