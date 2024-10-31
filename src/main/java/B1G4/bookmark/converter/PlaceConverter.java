@@ -1,10 +1,15 @@
 package B1G4.bookmark.converter;
 
+import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
+import B1G4.bookmark.repository.PlaceImgRepository;
+import B1G4.bookmark.service.MemberService.MemberServiceImpl;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
+import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class PlaceConverter {
     public static Place toPlace(PlaceRequestDTO.PlaceCreateDTO request, Double longitude, Double latitude) {
