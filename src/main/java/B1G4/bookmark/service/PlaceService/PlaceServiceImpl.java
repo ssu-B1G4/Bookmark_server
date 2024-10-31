@@ -11,6 +11,8 @@ import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -33,6 +35,8 @@ public class PlaceServiceImpl implements PlaceService{
     private final PlaceRepository placeRepository;
     private final MemberServiceImpl memberService;
     private final PlaceImgRepository placeImgRepository;
+    private static final Double EARTH_RADIUS = 6371.0;
+
     @Override
     public Map<String, Double> getGeoData(String address) {
         try{
@@ -99,5 +103,23 @@ public class PlaceServiceImpl implements PlaceService{
         List<String> placeImgList = placeImgRepository.findAllUrlByPlace(place);
         PlaceResponseDTO.PlaceDetailDTO response = PlaceConverter.toPlaceDetailDTO(place, isSaved, placeImgList);
         return response;
+    }
+
+    @Override
+    public Page<Place> findNearbyPlaces(Double longitude, Double latitude, Double radius, Integer page, Integer size) {
+        PageRequest pageRequest = PageRequest.of(page-1, size);
+        double latRange = radius / EARTH_RADIUS * (180 / Math.PI);
+        double lonRange = radius / (EARTH_RADIUS * Math.cos(Math.toRadians(latitude))) * (180 / Math.PI);
+        double minLat = latitude - latRange;
+        double maxLat = latitude + latRange;
+        double minLng = longitude - lonRange;
+        double maxLng = longitude + lonRange;
+        // 사각형 영역 내 장소 조회
+        Page<Place> places = placeRepository.findByBoundingBox(minLat, maxLat, minLng, maxLng, latitude, longitude, radius, pageRequest);
+
+        //반경 내 조회
+        return placeRepository.findByBoundingBox(minLat, maxLat, minLng, maxLng,
+                latitude, longitude, radius, pageRequest);
+
     }
 }

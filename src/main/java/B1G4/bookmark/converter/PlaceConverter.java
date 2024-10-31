@@ -59,4 +59,21 @@ public class PlaceConverter {
                 .outlet(place.getOutlet().getViewName())
                 .build();
     }
+    public static PlaceResponseDTO.PlacePreviewListDTO toPlacePreviewList(Page<Place> placeList, Member member, MemberServiceImpl memberService, PlaceImgRepository placeImgRepository) {
+        List<PlaceResponseDTO.PlacePreviewDTO> placePreviewDTOList = placeList.stream()
+                .map(place -> toPlacePreviewDTO(
+                        place,
+                        memberService.isSaved(member, place),
+                        placeImgRepository.findAllUrlByPlace(place)
+                ))
+                .collect(Collectors.toList());
+        return PlaceResponseDTO.PlacePreviewListDTO.builder()
+                .placePreviewDTOList(placePreviewDTOList)
+                .listSize(placeList.getSize())
+                .isFirst(placeList.isFirst())
+                .isLast(placeList.isLast())
+                .totalElements(placeList.getTotalElements())
+                .totalPage(placeList.getTotalPages())
+                .build();
+    }
 }

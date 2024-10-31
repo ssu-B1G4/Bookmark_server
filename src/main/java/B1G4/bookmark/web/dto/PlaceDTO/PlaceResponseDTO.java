@@ -29,6 +29,22 @@ public class PlaceResponseDTO {
         String mood1;
         String mood2;
         List<String> placeImgList;
+        Integer reviewCount;
+        Double longitude;
+        Double latitude;
+    }
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class PlacePreviewListDTO {
+        List<PlacePreviewDTO> placePreviewDTOList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+
     }
     @Getter
     @Builder
