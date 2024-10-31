@@ -50,6 +50,8 @@ public class Place extends BaseEntity {
 
     private Double latitude;
     private Double longitude;
+    @Builder.Default
+    private Integer reviewCount = 0;
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
@@ -70,5 +72,10 @@ public class Place extends BaseEntity {
     public void removeReview(Review review) {
         reviews.remove(review);
         review.setPlace(null);
+    }
+
+    //리뷰 개수 +1
+    public void addReviewCount() {
+        this.reviewCount++;
     }
 }
