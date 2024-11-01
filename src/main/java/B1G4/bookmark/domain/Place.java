@@ -44,7 +44,6 @@ public class Place extends BaseEntity {
     private Category category;
 
     private String phone;
-    private String time;
     private String url;
     private String summary;
 
@@ -58,6 +57,8 @@ public class Place extends BaseEntity {
 
     @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<PlaceImg> placeImgList = new ArrayList<>();
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
+    private List<OperatingTime> placeTimeList = new ArrayList<>();
 
     @OneToOne
     private Congestion congestion;

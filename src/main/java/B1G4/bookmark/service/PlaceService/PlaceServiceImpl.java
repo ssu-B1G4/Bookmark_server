@@ -3,6 +3,8 @@ package B1G4.bookmark.service.PlaceService;
 import B1G4.bookmark.converter.PlaceConverter;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
+import B1G4.bookmark.domain.OperatingTime;
+import B1G4.bookmark.repository.OperatingTimeRepository;
 import B1G4.bookmark.repository.PlaceImgRepository;
 import B1G4.bookmark.repository.PlaceRepository;
 import B1G4.bookmark.service.MemberService.MemberServiceImpl;
@@ -17,9 +19,8 @@ import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 
 @Service
@@ -35,6 +36,7 @@ public class PlaceServiceImpl implements PlaceService{
     private final PlaceRepository placeRepository;
     private final MemberServiceImpl memberService;
     private final PlaceImgRepository placeImgRepository;
+    private final OperatingTimeRepository operatingTimeRepository;
     private static final Double EARTH_RADIUS = 6371.0;
 
     @Override
@@ -101,7 +103,9 @@ public class PlaceServiceImpl implements PlaceService{
                 .orElseThrow(()-> new EntityNotFoundException("Place가 없습니다."));
         Boolean isSaved = memberService.isSaved(member, place);
         List<String> placeImgList = placeImgRepository.findAllUrlByPlace(place);
-        PlaceResponseDTO.PlaceDetailDTO response = PlaceConverter.toPlaceDetailDTO(place, isSaved, placeImgList);
+        Map<String, Map<String, String>> operatingTimeList = getOperatingTime(place);
+        PlaceResponseDTO.PlaceDetailDTO response = PlaceConverter.toPlaceDetailDTO(place, isSaved, placeImgList, operatingTimeList);
+        System.out.println("operatingTimeList = " + operatingTimeList);
         return response;
     }
 
@@ -125,5 +129,26 @@ public class PlaceServiceImpl implements PlaceService{
         PageRequest pageRequest = PageRequest.of(page-1, 10);
         Page<Place> searchPlaces = placeRepository.findByNameContainingOrAddressContaining(search, pageRequest);
         return searchPlaces;
+    }
+    @Override
+    public Map<String, Map<String, String>> getOperatingTime(Place place) {
+        List<OperatingTime> operatingTimeList = operatingTimeRepository.findAllByPlace(place);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+        //요일 순서
+        List<String> dayOrder = Arrays.asList("월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일");
+        //요일 순서 유지를 위해 LinkedHashMap 사용
+        Map<String, Map<String, String>> result = new LinkedHashMap<>();
+        //openTime이 먼저 뜨도록 TreeMap 사용
+        //요일 별 빈 map 생성
+        dayOrder.forEach(day -> result.put(day, new TreeMap<>()));
+        operatingTimeList.stream().forEach(operatingTime -> {
+            Map<String, String> timeMap = new TreeMap<>();
+            if(!operatingTime.getIsOff()){
+                timeMap.put("openTime", operatingTime.getOpenTime().format(formatter));
+                timeMap.put("closeTime", operatingTime.getCloseTime().format(formatter));
+            }
+            result.put(operatingTime.getDayOfWeek().getViewName(),timeMap);
+        });
+        return result;
     }
 }

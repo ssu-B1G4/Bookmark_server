@@ -6,6 +6,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Map;
 
 public class PlaceResponseDTO {
     @Getter
@@ -66,7 +67,7 @@ public class PlaceResponseDTO {
         Double longitude;
         Double latitude;
         String phone;
-        String time;
         String url;
+        Map<String, Map<String, String>> operatingTimeList;
     }
 }
