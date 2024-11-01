@@ -5,4 +5,6 @@ import B1G4.bookmark.domain.Place;
 
 public interface MemberService {
     Boolean isSaved(Member member, Place place);
+
+    Member findMemberById(Long memberId);
 }
