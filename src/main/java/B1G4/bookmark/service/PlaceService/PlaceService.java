@@ -15,4 +15,5 @@ public interface PlaceService {
     PlaceResponseDTO.PlaceDetailDTO detailPlace(Long placeId, Member member);
     Page<Place> findNearbyPlaces(Double longitude, Double latitude, Double radius, Integer page);
     Page<Place> searchPlaces(String search, Integer page);
+    Map<String, Map<String, String>> getOperatingTime(Place place);
 }
