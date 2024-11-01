@@ -106,8 +106,8 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public Page<Place> findNearbyPlaces(Double longitude, Double latitude, Double radius, Integer page, Integer size) {
-        PageRequest pageRequest = PageRequest.of(page-1, size);
+    public Page<Place> findNearbyPlaces(Double longitude, Double latitude, Double radius, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page-1, 10);
         double latRange = radius / EARTH_RADIUS * (180 / Math.PI);
         double lonRange = radius / (EARTH_RADIUS * Math.cos(Math.toRadians(latitude))) * (180 / Math.PI);
         double minLat = latitude - latRange;

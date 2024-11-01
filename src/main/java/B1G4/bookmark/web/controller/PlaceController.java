@@ -82,7 +82,7 @@ public class PlaceController {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new EntityNotFoundException("Member가 없습니다"));
         //TODO : 반경 - 5.0km, size - 10개, 추후 상의 후 변경
-        Page<Place> placeList = placeService.findNearbyPlaces(nowLongitude, nowLatitude, 5.0, page, 10);
+        Page<Place> placeList = placeService.findNearbyPlaces(nowLongitude, nowLatitude, 5.0, page);
         PlaceResponseDTO.PlacePreviewListDTO response = PlaceConverter.toPlacePreviewList(placeList, member, memberService, placeImgRepository);
         return BaseResponse.of(SuccessStatus.NEARBY_PLACE_OK, response);
     }
