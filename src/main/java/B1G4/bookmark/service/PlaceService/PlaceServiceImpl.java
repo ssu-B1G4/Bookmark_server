@@ -114,12 +114,16 @@ public class PlaceServiceImpl implements PlaceService{
         double maxLat = latitude + latRange;
         double minLng = longitude - lonRange;
         double maxLng = longitude + lonRange;
-        // 사각형 영역 내 장소 조회
-        Page<Place> places = placeRepository.findByBoundingBox(minLat, maxLat, minLng, maxLng, latitude, longitude, radius, pageRequest);
 
         //반경 내 조회
         return placeRepository.findByBoundingBox(minLat, maxLat, minLng, maxLng,
                 latitude, longitude, radius, pageRequest);
 
+    }
+    @Override
+    public Page<Place> searchPlaces(String search, Integer page) {
+        PageRequest pageRequest = PageRequest.of(page-1, 10);
+        Page<Place> searchPlaces = placeRepository.findByNameContainingOrAddressContaining(search, pageRequest);
+        return searchPlaces;
     }
 }
