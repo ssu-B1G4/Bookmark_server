@@ -82,8 +82,24 @@ public class PlaceController {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new EntityNotFoundException("Member가 없습니다"));
         //TODO : 반경 - 5.0km, size - 10개, 추후 상의 후 변경
-        Page<Place> placeList = placeService.findNearbyPlaces(nowLongitude, nowLatitude, 5.0, page, 10);
+        Page<Place> placeList = placeService.findNearbyPlaces(nowLongitude, nowLatitude, 5.0, page);
         PlaceResponseDTO.PlacePreviewListDTO response = PlaceConverter.toPlacePreviewList(placeList, member, memberService, placeImgRepository);
         return BaseResponse.of(SuccessStatus.NEARBY_PLACE_OK, response);
     }
+    //TODO:로그인 구현 후 memberId 제거
+    @Operation(summary = "공간 검색 결과 조회", description = "공간 검색 결과를 조회합니다. 검색 범위는 공간 이름과 공간 주소입니다.")
+    @Parameters({
+            @Parameter(name = "search", description = "검색어"),
+            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다.")
+
+    })
+    @GetMapping("/places/{memberId}")
+    public BaseResponse<PlaceResponseDTO.PlacePreviewListDTO> detailPlace(@RequestParam String search, @RequestParam Integer page, @PathVariable Long memberId) {
+        Member member = memberRepository.findById(memberId)
+                .orElseThrow(()->new EntityNotFoundException("Member가 없습니다"));
+        Page<Place> placeList = placeService.searchPlaces(search, page);
+        PlaceResponseDTO.PlacePreviewListDTO response = PlaceConverter.toPlacePreviewList(placeList, member, memberService, placeImgRepository);
+        return BaseResponse.of(SuccessStatus.SEARCH_PLACE_OK, response);
+    }
+
 }

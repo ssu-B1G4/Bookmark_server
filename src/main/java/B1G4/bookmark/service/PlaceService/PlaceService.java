@@ -13,5 +13,6 @@ public interface PlaceService {
     Place createPlace(PlaceRequestDTO.PlaceCreateDTO request, Double longitude, Double latitude);
     PlaceResponseDTO.PlacePreviewDTO previewPlace(Long placeId, Member member);
     PlaceResponseDTO.PlaceDetailDTO detailPlace(Long placeId, Member member);
-    Page<Place> findNearbyPlaces(Double longitude, Double latitude, Double radius, Integer page, Integer size);
+    Page<Place> findNearbyPlaces(Double longitude, Double latitude, Double radius, Integer page);
+    Page<Place> searchPlaces(String search, Integer page);
 }

@@ -32,4 +32,9 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
             @Param("radius") double radius,
             PageRequest pageRequest
     );
+
+    @Query("SELECT p FROM Place p WHERE" +
+            "(LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')))" +
+            "OR (LOWER(p.address) LIKE LOWER(CONCAT('%', :search, '%')))")
+    Page<Place> findByNameContainingOrAddressContaining(@Param("search") String search, PageRequest pageRequest);
 }
