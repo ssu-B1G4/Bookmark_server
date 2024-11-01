@@ -9,6 +9,7 @@ import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 public class PlaceConverter {
@@ -42,7 +43,7 @@ public class PlaceConverter {
                 .latitude(place.getLatitude())
                 .build();
     }
-    public static PlaceResponseDTO.PlaceDetailDTO toPlaceDetailDTO(Place place, Boolean isSaved, List<String> placeImgList) {
+    public static PlaceResponseDTO.PlaceDetailDTO toPlaceDetailDTO(Place place, Boolean isSaved, List<String> placeImgList, Map<String, Map<String, String>> operatingTimeList) {
         return PlaceResponseDTO.PlaceDetailDTO.builder()
                 .placeId(place.getId())
                 .size(place.getSize().getViewName())
@@ -54,7 +55,6 @@ public class PlaceConverter {
                 .name(place.getName())
                 .noise(place.getNoise().getViewName())
                 .placeImgList(placeImgList)
-                .time(place.getTime())
                 .category(place.getCategory().getViewName())
                 .longitude(place.getLongitude())
                 .latitude(place.getLatitude())
@@ -62,6 +62,7 @@ public class PlaceConverter {
                 .isSaved(isSaved)
                 .address(place.getAddress())
                 .outlet(place.getOutlet().getViewName())
+                .operatingTimeList(operatingTimeList)
                 .build();
     }
     public static PlaceResponseDTO.PlacePreviewListDTO toPlacePreviewList(Page<Place> placeList, Member member, MemberServiceImpl memberService, PlaceImgRepository placeImgRepository) {
