@@ -1,5 +1,7 @@
 package B1G4.bookmark.security.provider;
 
+import B1G4.bookmark.web.dto.authDTO.KakaoProfile;
+import B1G4.bookmark.web.dto.authDTO.OAuthToken;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,11 +14,6 @@ import org.springframework.web.client.RestTemplate;
 
 import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
 import B1G4.bookmark.apiPayload.exception.AuthException;
-import B1G4.bookmark.dto.KakaoProfile;
-import B1G4.bookmark.dto.OAuthToken;
-import B1G4.bookmark.redis.service.RefreshTokenService;
-import B1G4.bookmark.repository.MemberRepository;
-import B1G4.bookmark.security.principal.PrincipalDetailsService;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -25,11 +22,6 @@ import lombok.RequiredArgsConstructor;
 @Component
 @RequiredArgsConstructor
 public class KakaoAuthProvider {
-
-    private final PrincipalDetailsService principalDetailsService;
-    private final UserRepository userRepository;
-    private final JwtTokenProvider jwtTokenProvider;
-    private final RefreshTokenService refreshTokenService;
 
     @Value("${kakao.auth.client}")
     private String client;
@@ -91,13 +83,13 @@ public class KakaoAuthProvider {
 
         ObjectMapper objectMapper = new ObjectMapper();
         KakaoProfile kakaoProfile = null;
-
+        System.out.println(response.getBody());
         try {
             kakaoProfile = objectMapper.readValue(response.getBody(), KakaoProfile.class);
         } catch (JsonProcessingException e) {
             throw new AuthException(ErrorStatus.INVALID_REQUEST_INFO);
         }
-
+        System.out.println(kakaoProfile.getKakaoAccount().getEmail());
         return kakaoProfile;
     }
 }
