@@ -48,11 +48,12 @@ public class Member extends BaseEntity {
     }
 
     @Builder
-    public Member(String name, String nickname, String img, Mood mood) {
+    public Member(String name, String nickname, String img, Mood mood, String email) {
         this.name = name;
         this.nickname = nickname;
         this.img = img;
         this.mood = mood;
+        this.email = email;
     }
 
     public void updateToken(String accessToken, String refreshToken) {
