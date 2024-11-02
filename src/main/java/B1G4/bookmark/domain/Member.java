@@ -17,9 +17,7 @@ public class Member extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String name;
     private String nickname;
-    private String img;
     private String accessToken;
     private String refreshToken;
     private String email;
@@ -48,10 +46,8 @@ public class Member extends BaseEntity {
     }
 
     @Builder
-    public Member(String name, String nickname, String img, Mood mood, String email) {
-        this.name = name;
+    public Member(String nickname, Mood mood, String email) {
         this.nickname = nickname;
-        this.img = img;
         this.mood = mood;
         this.email = email;
     }

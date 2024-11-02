@@ -6,8 +6,9 @@ import B1G4.bookmark.web.dto.authDTO.KakaoProfile;
 
 public class AuthConverter {
 
-    public static Member toMember(KakaoProfile kakaoProfile) {
+    public static Member toMember(KakaoProfile kakaoProfile, String nickname) {
         return Member.builder()
+                .nickname(nickname)
                 .email(kakaoProfile.getKakaoAccount().getEmail())
                 .build();
     }
