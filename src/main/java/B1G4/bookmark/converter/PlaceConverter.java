@@ -8,6 +8,7 @@ import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
 import org.springframework.data.domain.Page;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -28,11 +29,11 @@ public class PlaceConverter {
     }
 
     public static PlaceResponseDTO.PlacePreviewDTO toPlacePreviewDTO(Place place, Boolean isSaved, List<String> placeImgList) {
+        List<String> moods = Arrays.asList(place.getMood1().getViewName(), place.getMood2().getViewName());
         return PlaceResponseDTO.PlacePreviewDTO.builder()
                 .placeId(place.getId())
                 .isSaved(isSaved)
-                .mood1(place.getMood1().getViewName())
-                .mood2(place.getMood2().getViewName())
+                .moods(moods)
                 .size(place.getSize().getViewName())
                 .outlet(place.getOutlet().getViewName())
                 .name(place.getName())
@@ -44,12 +45,12 @@ public class PlaceConverter {
                 .build();
     }
     public static PlaceResponseDTO.PlaceDetailDTO toPlaceDetailDTO(Place place, Boolean isSaved, List<String> placeImgList, Map<String, Map<String, String>> operatingTimeList) {
+        List<String> moods = Arrays.asList(place.getMood1().getViewName(), place.getMood2().getViewName());
         return PlaceResponseDTO.PlaceDetailDTO.builder()
                 .placeId(place.getId())
                 .size(place.getSize().getViewName())
                 .wifi(place.getWifi().getViewName())
-                .mood1(place.getMood1().getViewName())
-                .mood2(place.getMood2().getViewName())
+                .moods(moods)
                 .url(place.getUrl())
                 .phone(place.getPhone())
                 .name(place.getName())

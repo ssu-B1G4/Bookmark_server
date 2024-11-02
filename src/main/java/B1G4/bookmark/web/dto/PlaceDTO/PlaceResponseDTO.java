@@ -27,8 +27,7 @@ public class PlaceResponseDTO {
         String outlet;
         String wifi;
         Boolean isSaved;
-        String mood1;
-        String mood2;
+        List<String> moods;
         List<String> placeImgList;
         Integer reviewCount;
         Double longitude;
@@ -62,8 +61,7 @@ public class PlaceResponseDTO {
         String size;
         String wifi;
         String noise;
-        String mood1;
-        String mood2;
+        List<String> moods;
         Double longitude;
         Double latitude;
         String phone;
