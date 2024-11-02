@@ -22,6 +22,7 @@ public class Member extends BaseEntity {
     private String img;
     private String accessToken;
     private String refreshToken;
+    private String email;
 
     // 선호 분위기 1개만 저장?
     @Enumerated(EnumType.STRING)
