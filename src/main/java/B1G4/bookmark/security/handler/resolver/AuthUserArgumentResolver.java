@@ -1,5 +1,6 @@
 package B1G4.bookmark.security.handler.resolver;
 
+import B1G4.bookmark.service.MemberService.MemberService;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -13,7 +14,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
 import B1G4.bookmark.apiPayload.exception.GeneralException;
 import B1G4.bookmark.domain.Member;
-import B1G4.bookmark.service.;
 
 import lombok.RequiredArgsConstructor;
 
@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
 
-    private final UserService userService;
+    private final MemberService memberService;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -53,6 +53,6 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
                 (UsernamePasswordAuthenticationToken) authentication;
         Long userId = Long.valueOf(authenticationToken.getName());
 
-        return userService.findUserById(userId);
+        return memberService.findMemberById(userId);
     }
 }
