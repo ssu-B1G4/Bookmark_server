@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum Size {
-    Small("작음"),
+    Small("부족"),
     Medium("보통"),
-    Large("큼");
+    Large("넉넉");
 
     private final String size;
 

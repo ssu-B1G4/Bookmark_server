@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum Outlet {
-    Few("적음"),
+    Few("부족"),
     Normal("보통"),
-    Many("많음");
+    Many("넉넉");
 
     private final String outlet;
 

@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum Noise {
-    Low("낮음"),
-    Medium("중간"),
-    High("높음");
+    Low("조용함"),
+    Medium("보통"),
+    High("생기있음");
 
     private final String noise;
 

@@ -5,8 +5,8 @@ import lombok.Getter;
 @Getter
 public enum Wifi {
     // 2종류만 있는건가
-    On("있음"),
-    Off("없음");
+    On("있어요"),
+    Off("없어요");
 
     private final String wifi;
 
