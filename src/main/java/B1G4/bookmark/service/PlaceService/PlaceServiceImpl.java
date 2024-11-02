@@ -4,6 +4,7 @@ import B1G4.bookmark.converter.PlaceConverter;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.domain.OperatingTime;
+import B1G4.bookmark.domain.enums.*;
 import B1G4.bookmark.repository.OperatingTimeRepository;
 import B1G4.bookmark.repository.PlaceImgRepository;
 import B1G4.bookmark.repository.PlaceRepository;
@@ -14,13 +15,17 @@ import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 @Service
@@ -130,6 +135,51 @@ public class PlaceServiceImpl implements PlaceService{
         Page<Place> searchPlaces = placeRepository.findByNameContainingOrAddressContaining(search, pageRequest);
         return searchPlaces;
     }
+
+    //필터 적용
+    @Override
+    public Page<Place> addFilter(Page<Place> places, String mood, String day, String time, String size, String outlet, String noise, String wifi) {
+        Stream<Place> filteredStream = places.getContent().stream();
+        //분위기 필터 적용
+        if(mood != null && !mood.isEmpty()){
+            filteredStream = filteredStream.filter(place ->
+                place.getMood1().equals(Mood.toMood(mood)) ||
+                place.getMood2().equals(Mood.toMood(mood)));
+        }
+        //운영시간 필터 적용
+        if(day != null && !day.isEmpty() && time != null && !time.isEmpty()){
+            filteredStream = filteredStream.filter(place ->
+                    isOpen(place, time, day)
+                    );
+        }
+//        else if(day != null || time != null)
+//            throw new PlaceHandler(ErrorStatus.INVALID_TIME_FILTER);
+        //공간 크기 필터
+        if(size != null && !size.isEmpty()){
+            filteredStream = filteredStream.filter(place ->
+                    place.getSize().equals(Size.toSize(size)));
+        }
+        //콘센트 필터
+        if(outlet != null && !outlet.isEmpty()){
+            filteredStream = filteredStream.filter(place ->
+                    place.getOutlet().equals(Outlet.toOutlet(outlet)));
+        }
+        //소음 필터
+        if(noise != null && !noise.isEmpty()){
+            filteredStream = filteredStream.filter(place ->
+                    place.getNoise().equals(Noise.toNoise(noise)));
+        }
+        //와이파이 필터
+        if(wifi != null && !wifi.isEmpty()){
+            filteredStream = filteredStream.filter(place ->
+                    place.getWifi().equals(Wifi.toWifi(wifi)));
+        }
+        List<Place> filteredList = filteredStream.collect(Collectors.toList());
+        return new PageImpl<>(filteredList, places.getPageable(), filteredList.size());
+
+    }
+
+    //공간의 운영시간을 조회하는 서비스
     @Override
     public Map<String, Map<String, String>> getOperatingTime(Place place) {
         List<OperatingTime> operatingTimeList = operatingTimeRepository.findAllByPlace(place);
@@ -150,5 +200,30 @@ public class PlaceServiceImpl implements PlaceService{
             result.put(operatingTime.getDayOfWeek().getViewName(),timeMap);
         });
         return result;
+    }
+
+
+    //공간이 해당 요일, 시간에 운영중인지 여부를 확인하는 서비스
+    @Override
+    public Boolean isOpen(Place place, String filterTime, String dayOfWeek) {
+        DayOfWeek day = DayOfWeek.toDayOfWeek(dayOfWeek);
+        LocalTime time = LocalTime.parse(filterTime);
+        OperatingTime operatingTime = operatingTimeRepository.findByPlaceAndDayOfWeek(place, day);
+        //TODO : 운영시간 다 채우기
+        if(operatingTime == null) {
+            return false;
+        }
+        if(operatingTime.getIsOff()) {
+            return false;
+        }
+        else{
+            LocalTime open = operatingTime.getOpenTime();
+            LocalTime close = operatingTime.getCloseTime();
+            if (open.isBefore(close)) {  // 일반적인 경우 (예: 09:00 ~ 18:00)
+                return !time.isBefore(open) && !time.isAfter(close);
+            } else {  // 자정을 넘어가는 경우 (예: 22:00 ~ 02:00)
+                return !time.isBefore(open) || !time.isAfter(close);
+            }
+        }
     }
 }
