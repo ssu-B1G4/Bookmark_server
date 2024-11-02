@@ -70,35 +70,69 @@ public class PlaceController {
     @Parameters({
             @Parameter(name = "nowLongitude", description = "현재 사용자 위치의 경도"),
             @Parameter(name = "nowLatitude", description = "현재 사용자 위치의 위도"),
-            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다.")
+            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다."),
+            @Parameter(name = "mood", description = "분위기 필터, 편안한/신나는/차분한/즐거운/아늑한/재미있는 중에 선택"),
+            @Parameter(name = "day", description = "영업시간 필터(요일), 반드시 시간과 함께 보내주세요. ex) 월요일"),
+            @Parameter(name = "time", description = "영업시간 필터(시간), 반드시 요일과 함께 보내주세요. ex) 14:00"),
+            @Parameter(name = "size", description = "공간크기 필터, 부족/보통/넉넉 중에 선택"),
+            @Parameter(name = "outlet", description = "콘센트 필터, 부족/보통/넉넉 중에 선택"),
+            @Parameter(name = "noise", description = "소음 필터, 조용함/보통/생기있음 중에 선택"),
+            @Parameter(name = "wifi", description = "와이파이 필터, 있어요/없어요 중에 선택")
+
     })
     @GetMapping("/places/nearby/{memberId}")
     public BaseResponse<PlaceResponseDTO.PlacePreviewListDTO> getNearbyPlaceList(
             @RequestParam(name = "nowLongitude") Double nowLongitude,
             @RequestParam(name = "nowLatitude") Double nowLatitude,
             @RequestParam(name = "page") Integer page,
+            @RequestParam(required = false) String mood,
+            @RequestParam(required = false) String day,
+            @RequestParam(required = false) String time,
+            @RequestParam(required = false) String size,
+            @RequestParam(required = false) String outlet,
+            @RequestParam(required = false) String noise,
+            @RequestParam(required = false) String wifi,
             @PathVariable Long memberId
     ) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new EntityNotFoundException("Member가 없습니다"));
         //TODO : 반경 - 5.0km, size - 10개, 추후 상의 후 변경
         Page<Place> placeList = placeService.findNearbyPlaces(nowLongitude, nowLatitude, 5.0, page);
-        PlaceResponseDTO.PlacePreviewListDTO response = PlaceConverter.toPlacePreviewList(placeList, member, memberService, placeImgRepository);
+        Page<Place> filteredPlaceList = placeService.addFilter(placeList, mood, day, time, size, outlet, noise, wifi);
+        PlaceResponseDTO.PlacePreviewListDTO response = PlaceConverter.toPlacePreviewList(filteredPlaceList, member, memberService, placeImgRepository);
         return BaseResponse.of(SuccessStatus.NEARBY_PLACE_OK, response);
     }
     //TODO:로그인 구현 후 memberId 제거
     @Operation(summary = "공간 검색 결과 조회", description = "공간 검색 결과를 조회합니다. 검색 범위는 공간 이름과 공간 주소입니다.")
     @Parameters({
             @Parameter(name = "search", description = "검색어"),
-            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다.")
+            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다."),
+            @Parameter(name = "mood", description = "분위기 필터, 편안한/신나는/차분한/즐거운/아늑한/재미있는 중에 선택"),
+            @Parameter(name = "day", description = "영업시간 필터(요일), 반드시 시간과 함께 보내주세요. ex) 월요일"),
+            @Parameter(name = "time", description = "영업시간 필터(시간), 반드시 요일과 함께 보내주세요. ex) 14:00"),
+            @Parameter(name = "size", description = "공간크기 필터, 부족/보통/넉넉 중에 선택"),
+            @Parameter(name = "outlet", description = "콘센트 필터, 부족/보통/넉넉 중에 선택"),
+            @Parameter(name = "noise", description = "소음 필터, 조용함/보통/생기있음 중에 선택"),
+            @Parameter(name = "wifi", description = "와이파이 필터, 있어요/없어요 중에 선택")
 
     })
     @GetMapping("/places/{memberId}")
-    public BaseResponse<PlaceResponseDTO.PlacePreviewListDTO> detailPlace(@RequestParam String search, @RequestParam Integer page, @PathVariable Long memberId) {
+    public BaseResponse<PlaceResponseDTO.PlacePreviewListDTO> searchPlace(
+            @RequestParam(name = "search") String search,
+            @RequestParam(name = "page") Integer page,
+            @RequestParam(required = false) String mood,
+            @RequestParam(required = false) String day,
+            @RequestParam(required = false) String time,
+            @RequestParam(required = false)String size,
+            @RequestParam(required = false) String outlet,
+            @RequestParam(required = false) String noise,
+            @RequestParam(required = false) String wifi,
+            @PathVariable Long memberId) {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(()->new EntityNotFoundException("Member가 없습니다"));
         Page<Place> placeList = placeService.searchPlaces(search, page);
-        PlaceResponseDTO.PlacePreviewListDTO response = PlaceConverter.toPlacePreviewList(placeList, member, memberService, placeImgRepository);
+        Page<Place> filteredPlaceList = placeService.addFilter(placeList, mood, day, time, size, outlet, noise, wifi);
+        PlaceResponseDTO.PlacePreviewListDTO response = PlaceConverter.toPlacePreviewList(filteredPlaceList, member, memberService, placeImgRepository);
         return BaseResponse.of(SuccessStatus.SEARCH_PLACE_OK, response);
     }
 

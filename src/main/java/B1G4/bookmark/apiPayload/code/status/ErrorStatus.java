@@ -38,7 +38,22 @@ public enum ErrorStatus implements BaseErrorCode {
 
     //Search 관련
     SEARCH_CONDITION_INVALID(HttpStatus.BAD_REQUEST, "SEARCH_001", "검색 조건이 하나라도 존재해야 합니다."),
-    RECREATION_NOT_FOUND(HttpStatus.NOT_FOUND, "SEARCH_001", "검색 결과가 존재하지 않습니다.");
+    RECREATION_NOT_FOUND(HttpStatus.NOT_FOUND, "SEARCH_001", "검색 결과가 존재하지 않습니다."),
+
+    //Place 관련
+    CATEGORY_NOT_FOUND(HttpStatus.NOT_FOUND, "PLACE_001", "필터에 해당하는 카테고리가 없습니다. 실내/야외 중 선택해주세요."),
+    MOOD_NOT_FOUND(HttpStatus.NOT_FOUND, "PLACE_002", "필터에 해당하는 분위기가 없습니다. 편안한/신나는/차분한/즐거운/아늑한/재미있는 중에 선택해주세요."),
+    SIZE_NOT_FOUND(HttpStatus.NOT_FOUND, "PLACE_003", "필터에 해당하는 공간크기가 없습니다. 부족/보통/넉넉 중에 선택해주세요."),
+    OUTLET_NOT_FOUND(HttpStatus.NOT_FOUND, "PLACE_004", "필터에 해당하는 콘센트가 없습니다. 부족/보통/넉넉 중에 선택해주세요."),
+    NOISE_NOT_FOUND(HttpStatus.NOT_FOUND, "PLACE_005", "필터에 해당하는 소음이 없습니다. 조용함/보통/생기있음 중에 선택해주세요."),
+    INVALID_DAY(HttpStatus.BAD_REQUEST, "PLACE_006", "잘못된 요일 입니다."),
+    WIFI_NOT_FOUND(HttpStatus.NOT_FOUND, "PLACE_007", "필터에 해당하는 와이파이가 없습니다. 있어요/없어요 중에 선택해주세요."),
+    INVALID_TIME_FILTER(HttpStatus.BAD_REQUEST, "PLACE_008", "운영 시간 필터가 잘못되었습니다. 필터를 적용할 시간과 요일을 함께 보내주세요"),
+
+
+
+
+    ;
 
 
     private final HttpStatus httpStatus;

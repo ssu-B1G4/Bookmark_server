@@ -16,4 +16,6 @@ public interface PlaceService {
     Page<Place> findNearbyPlaces(Double longitude, Double latitude, Double radius, Integer page);
     Page<Place> searchPlaces(String search, Integer page);
     Map<String, Map<String, String>> getOperatingTime(Place place);
+    Boolean isOpen(Place place, String filterTime, String dayOfWeek);
+    Page<Place> addFilter(Page<Place> places, String mood, String day, String time, String size, String outlet, String noise, String wifi);
 }
