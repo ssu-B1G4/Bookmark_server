@@ -17,7 +17,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
 @Service
 @RequiredArgsConstructor
@@ -57,15 +59,32 @@ public class MemberServiceImpl implements MemberService{
             Member member = queryMember.get();
             String accessToken = jwtTokenProvider.createAccessToken(member.getId());
             String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
-        //    refreshTokenService.saveToken(refreshToken);
+        //    refreshTokenService.saveToken(refreshToken);  redis관련
             return AuthConverter.toOAuthResponse(accessToken, refreshToken, true, member);
         } else {
-            Member member = memberRepository.save(AuthConverter.toMember(kakaoProfile));
+            Member member = memberRepository.save(AuthConverter.toMember(kakaoProfile, makeNickname()));
             String accessToken = jwtTokenProvider.createAccessToken(member.getId());
             String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
         //    refreshTokenService.saveToken(refreshToken);
             return AuthConverter.toOAuthResponse(accessToken, refreshToken, false, member);
         }
+    }
+
+
+    // 랜덤 닉네임 생성
+    private String makeNickname(){
+        List<String> determiners = List.of(
+                "예쁜", "멋진", "귀여운", "배고픈", "철학적인", "현학적인", "슬픈", "파란", "비싼", "밝은", "생각하는", "하얀"
+        );
+
+        List<String> animals = List.of(
+                "토끼", "비버", "강아지", "부엉이", "여우", "호랑이", "문어", "고양이", "미어캣", "다람쥐", "수달", "곰"
+        );
+
+        Random random = new Random();
+        String determiner = determiners.get(random.nextInt(determiners.size()));
+        String animal = animals.get(random.nextInt(animals.size()));
+        return determiner + " " + animal;
     }
 
 }
