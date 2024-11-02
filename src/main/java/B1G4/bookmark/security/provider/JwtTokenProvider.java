@@ -1,4 +1,4 @@
-package B1G4.bookmark.security.jwt;
+package B1G4.bookmark.security.provider;
 
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;

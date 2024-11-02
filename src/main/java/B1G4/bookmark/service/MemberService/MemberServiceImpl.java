@@ -8,7 +8,7 @@ import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.redis.service.RefreshTokenService;
 import B1G4.bookmark.repository.MemberRepository;
 import B1G4.bookmark.repository.UserPlaceRepository;
-import B1G4.bookmark.security.jwt.JwtTokenProvider;
+import B1G4.bookmark.security.provider.JwtTokenProvider;
 import B1G4.bookmark.security.provider.KakaoAuthProvider;
 import B1G4.bookmark.web.dto.MemberDTO.AuthResponseDTO;
 import B1G4.bookmark.web.dto.authDTO.KakaoProfile;

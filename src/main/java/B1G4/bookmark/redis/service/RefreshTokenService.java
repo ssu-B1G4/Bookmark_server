@@ -1,6 +1,6 @@
 package B1G4.bookmark.redis.service;
 
-import B1G4.bookmark.security.jwt.JwtTokenProvider;
+import B1G4.bookmark.security.provider.JwtTokenProvider;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

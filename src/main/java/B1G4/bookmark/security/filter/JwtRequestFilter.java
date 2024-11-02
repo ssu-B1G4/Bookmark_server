@@ -15,7 +15,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
 import B1G4.bookmark.apiPayload.exception.AuthException;
-import B1G4.bookmark.security.jwt.JwtTokenProvider;
+import B1G4.bookmark.security.provider.JwtTokenProvider;
 import B1G4.bookmark.security.principal.PrincipalDetailsService;
 
 import lombok.RequiredArgsConstructor;
