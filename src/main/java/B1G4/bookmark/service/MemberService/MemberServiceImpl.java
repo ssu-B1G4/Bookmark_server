@@ -57,10 +57,15 @@ public class MemberServiceImpl implements MemberService{
         // 가입자 혹은 비가입자 체크해서 로그인 처리
         if (queryMember.isPresent()) {
             Member member = queryMember.get();
+            // 회원탈퇴 여부 검증
+            if(member.getIsDelete()==1){
+                throw new UserException(ErrorStatus.USER_NOT_FOUND);
+            }else{
             String accessToken = jwtTokenProvider.createAccessToken(member.getId());
             String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
         //    refreshTokenService.saveToken(refreshToken);  redis관련
             return AuthConverter.toOAuthResponse(accessToken, refreshToken, true, member);
+            }
         } else {
             Member member = memberRepository.save(AuthConverter.toMember(kakaoProfile, makeNickname()));
             String accessToken = jwtTokenProvider.createAccessToken(member.getId());
@@ -68,6 +73,16 @@ public class MemberServiceImpl implements MemberService{
         //    refreshTokenService.saveToken(refreshToken);
             return AuthConverter.toOAuthResponse(accessToken, refreshToken, false, member);
         }
+    }
+
+    @Override
+    public String deleteMember(Member member) {
+        try {
+            member.setIsDelete(1);
+        } catch (Exception e) {
+            throw new RuntimeException("삭제 실패");
+        }
+        return "회원탈퇴 성공";
     }
 
 

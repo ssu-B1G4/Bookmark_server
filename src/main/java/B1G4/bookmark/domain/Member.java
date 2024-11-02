@@ -4,6 +4,7 @@ import B1G4.bookmark.domain.common.BaseEntity;
 import B1G4.bookmark.domain.enums.Mood;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +22,10 @@ public class Member extends BaseEntity {
     private String accessToken;
     private String refreshToken;
     private String email;
+
+    @Setter
+    @ColumnDefault("0")  //삭제시 1
+    private int isDelete;
 
     // 선호 분위기 1개만 저장?
     @Enumerated(EnumType.STRING)
@@ -56,4 +61,6 @@ public class Member extends BaseEntity {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
     }
+
+
 }

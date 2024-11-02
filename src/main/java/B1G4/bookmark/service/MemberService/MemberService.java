@@ -10,4 +10,6 @@ public interface MemberService {
     Member findMemberById(Long memberId);
 
     AuthResponseDTO.OAuthResponse kakaoLogin(String code);
+
+    String deleteMember(Member member);
 }
