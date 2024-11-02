@@ -1,5 +1,7 @@
 package B1G4.bookmark.domain.enums;
 
+import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
+import B1G4.bookmark.apiPayload.exception.handler.PlaceHandler;
 import lombok.Getter;
 
 @Getter
@@ -15,5 +17,14 @@ public enum Size {
     }
     public String getViewName() {
         return size;
+    }
+    public static Size toSize(String name) {
+        if(name == null || name.isEmpty()) return null;
+        for(Size sizeEnum : Size.values()) {
+            if(sizeEnum.getViewName().contains(name)) {
+                return sizeEnum;
+            }
+        }
+        throw new PlaceHandler(ErrorStatus.SIZE_NOT_FOUND);
     }
 }

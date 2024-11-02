@@ -1,5 +1,7 @@
 package B1G4.bookmark.domain.enums;
 
+import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
+import B1G4.bookmark.apiPayload.exception.handler.PlaceHandler;
 import lombok.Getter;
 
 @Getter
@@ -15,5 +17,14 @@ public enum Noise {
     }
     public String getViewName() {
         return noise;
+    }
+    public static Noise toNoise(String name) {
+        if(name == null || name.isEmpty()) return null;
+        for(Noise noiseEnum : Noise.values()) {
+            if(noiseEnum.getViewName().contains(name)) {
+                return noiseEnum;
+            }
+        }
+        throw new PlaceHandler(ErrorStatus.NOISE_NOT_FOUND);
     }
 }

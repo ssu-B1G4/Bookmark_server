@@ -1,5 +1,7 @@
 package B1G4.bookmark.domain.enums;
 
+import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
+import B1G4.bookmark.apiPayload.exception.handler.PlaceHandler;
 import lombok.Getter;
 
 @Getter
@@ -16,5 +18,13 @@ public enum Wifi {
 
     public String getViewName() {
         return wifi;
+    }
+    public static Wifi toWifi(String name) {
+        for(Wifi wifiEnum : Wifi.values()) {
+            if(wifiEnum.getViewName().contains(name)) {
+                return wifiEnum;
+            }
+        }
+        throw new PlaceHandler(ErrorStatus.WIFI_NOT_FOUND);
     }
 }
