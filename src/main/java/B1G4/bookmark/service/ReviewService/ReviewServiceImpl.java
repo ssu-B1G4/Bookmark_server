@@ -17,8 +17,6 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.stream.Collectors;
-
 @Service
 @RequiredArgsConstructor
 public class ReviewServiceImpl implements ReviewService{
@@ -37,11 +35,13 @@ public class ReviewServiceImpl implements ReviewService{
                 .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberId));
 
         Review review = ReviewConverter.toReview(reviewRequestDTO, place, member);
+
         reviewRepository.save(review);
 
         for (Mood mood: reviewRequestDTO.getMoods()) {
             place.incrementMoodCount(mood);
         }
+
         place.updateMoods();
 
         //리뷰 등록시 공간 리뷰개수 + 1
