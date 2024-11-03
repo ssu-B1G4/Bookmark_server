@@ -6,5 +6,5 @@ import B1G4.bookmark.web.dto.ReviewDTO.BookDTO;
 import java.util.List;
 
 public interface BookService {
-    public void saveBooks(List<BookDTO> books, Place place);
+    public void addBooksToPlace(Long placeId, List<BookDTO> bookDTOs);
 }

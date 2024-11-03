@@ -1,16 +1,12 @@
 package B1G4.bookmark.web.dto.ReviewDTO;
 
 import B1G4.bookmark.domain.enums.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Getter
-@Setter
-@AllArgsConstructor
+@Data
 public class ReviewRequestDTO {
     private String content;
     private LocalDateTime writtenDate;
