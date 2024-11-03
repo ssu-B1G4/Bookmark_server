@@ -9,12 +9,14 @@ import B1G4.bookmark.repository.MemberRepository;
 import B1G4.bookmark.repository.PlaceRepository;
 import B1G4.bookmark.repository.ReviewRepository;
 import B1G4.bookmark.web.dto.ReviewDTO.ReviewRequestDTO;
+import B1G4.bookmark.web.dto.ReviewDTO.ReviewResponseDTO;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -25,6 +27,7 @@ public class ReviewServiceImpl implements ReviewService{
     private final PlaceRepository placeRepository;
     private final MemberRepository memberRepository;
 
+    @Transactional
     public Long createReview(Long placeId, Long memberId,ReviewRequestDTO reviewRequestDTO) {
 
         // Place 및 Member 조회
@@ -34,13 +37,11 @@ public class ReviewServiceImpl implements ReviewService{
                 .orElseThrow(() -> new IllegalArgumentException("Member not found with id: " + memberId));
 
         Review review = ReviewConverter.toReview(reviewRequestDTO, place, member);
-
         reviewRepository.save(review);
 
         for (Mood mood: reviewRequestDTO.getMoods()) {
             place.incrementMoodCount(mood);
         }
-
         place.updateMoods();
 
         //리뷰 등록시 공간 리뷰개수 + 1
@@ -50,13 +51,14 @@ public class ReviewServiceImpl implements ReviewService{
         return review.getId();
     }
 
-    // 특정 장소의 리뷰에서 분위기를 집계하여 대표 분위기 2개 갱신
-    private void updatePlaceMoods(Place place, List<Mood> newReviewMoods) {
-       Map<Mood, Long> moodCOunt = new HashMap<>();
+    @Transactional
+    public Page<ReviewResponseDTO.ReviewPreviewDTO> getReviewsByPlace(Long placeId, int page, int size) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id를 가진 공간 없음 " + placeId));
 
-       List<Review> reviews = reviewRepository.findByPlace(place);
-       for (Review review: reviews) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Review> reviews = reviewRepository.findByPlace(place, pageable);
 
-       }
+        return reviews.map(ReviewConverter::toReviewPreviewDTO);
     }
 }

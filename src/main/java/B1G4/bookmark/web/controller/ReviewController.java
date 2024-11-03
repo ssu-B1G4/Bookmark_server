@@ -10,10 +10,8 @@ import B1G4.bookmark.web.dto.ReviewDTO.ReviewRequestDTO;
 import B1G4.bookmark.service.ReviewService.ReviewServiceImpl;
 import B1G4.bookmark.web.dto.ReviewDTO.ReviewResponseDTO;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.data.domain.Page;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
@@ -27,7 +25,7 @@ public class ReviewController {
     private final BookServiceImpl bookService;
 
     @PostMapping(value = "/reviews/{placeId}", consumes = "multipart/form-data")
-    public BaseResponse<ReviewResponseDTO> createReview(
+    public BaseResponse<ReviewResponseDTO.ReviewIdDTO> createReview(
             @PathVariable Long placeId,
             @AuthUser Member member,
             @RequestPart("reviewData") ReviewRequestDTO reviewRequestDTO,
@@ -38,7 +36,7 @@ public class ReviewController {
         // 리뷰 저장
         Long reviewId = reviewService.createReview(placeId, memberId, reviewRequestDTO);
 
-        // 해당 공간이 보유하고 있는 책 저장
+        // 책 정보 저장
         bookService.addBooksToPlace(placeId, reviewRequestDTO.getBooks());
 
         // 이미지 저장
@@ -46,7 +44,30 @@ public class ReviewController {
             reviewImageService.uploadImage(reviewId, images);
         }
 
-        ReviewResponseDTO responseDTO = new ReviewResponseDTO(reviewId);
+        // ReviewIdDTO 반환
+        ReviewResponseDTO.ReviewIdDTO responseDTO = ReviewResponseDTO.ReviewIdDTO.builder()
+                .reviewId(reviewId)
+                .build();
+
         return BaseResponse.of(SuccessStatus.REVIEW_CREATE_OK, responseDTO);
+    }
+
+    @GetMapping("/reviews/{placeId}")
+    public BaseResponse<ReviewResponseDTO.ReviewListDTO> getReviewsByPlace(
+            @PathVariable Long placeId,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size) {
+
+        Page<ReviewResponseDTO.ReviewPreviewDTO> reviews = reviewService.getReviewsByPlace(placeId, page, size);
+
+        ReviewResponseDTO.ReviewListDTO responseDTO = ReviewResponseDTO.ReviewListDTO.builder()
+                .reviewPreviewList(reviews.getContent())
+                .totalPages(reviews.getTotalPages())
+                .totalElements(reviews.getTotalElements())
+                .isFirst(reviews.isFirst())
+                .isLast(reviews.isLast())
+                .build();
+
+        return BaseResponse.of(SuccessStatus.REVIEW_FETCH_OK, responseDTO);
     }
 }
