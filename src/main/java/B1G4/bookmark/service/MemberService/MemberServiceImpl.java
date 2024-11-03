@@ -3,6 +3,7 @@ package B1G4.bookmark.service.MemberService;
 import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
 import B1G4.bookmark.apiPayload.exception.UserException;
 import B1G4.bookmark.converter.AuthConverter;
+import B1G4.bookmark.converter.MemberConverter;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.redis.service.RefreshTokenService;
@@ -11,6 +12,7 @@ import B1G4.bookmark.repository.UserPlaceRepository;
 import B1G4.bookmark.security.provider.JwtTokenProvider;
 import B1G4.bookmark.security.provider.KakaoAuthProvider;
 import B1G4.bookmark.web.dto.MemberDTO.AuthResponseDTO;
+import B1G4.bookmark.web.dto.MemberDTO.MemberResponseDTO;
 import B1G4.bookmark.web.dto.authDTO.KakaoProfile;
 import B1G4.bookmark.web.dto.authDTO.OAuthToken;
 import lombok.RequiredArgsConstructor;
@@ -88,6 +90,11 @@ public class MemberServiceImpl implements MemberService{
             throw new RuntimeException("삭제 실패");
         }
         return "회원탈퇴 성공";
+    }
+
+    @Override
+    public MemberResponseDTO.MyPageResponse getMyPageInfo(Member member) {
+        return MemberConverter.toMyPageResponse(member);
     }
 
 
