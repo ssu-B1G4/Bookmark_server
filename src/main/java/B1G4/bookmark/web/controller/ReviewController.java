@@ -66,10 +66,20 @@ public class ReviewController {
         return BaseResponse.of(SuccessStatus.REVIEW_CREATE_OK, responseDTO);
     }
 
+    @Operation(
+            summary = "특정 장소의 리뷰 목록 조회",
+            description = "특정 장소에 작성된 리뷰 목록을 페이지네이션 형태로 조회합니다. " +
+                          "페이지 번호와 페이지 크기를 조정할 수 있습니다."
+    )
     @GetMapping("/reviews/{placeId}")
     public BaseResponse<ReviewResponseDTO.ReviewListDTO> getReviewsByPlace(
+            @Parameter(description = "리뷰를 조회할 장소 ID", required = true)
             @PathVariable Long placeId,
+
+            @Parameter(description = "페이지 번호 (기본값: 0)")
             @RequestParam(defaultValue = "0") int page,
+
+            @Parameter(description = "페이지당 항목 수 (기본값: 10)")
             @RequestParam(defaultValue = "10") int size) {
 
         Page<ReviewResponseDTO.ReviewPreviewDTO> reviews = reviewService.getReviewsByPlace(placeId, page, size);
