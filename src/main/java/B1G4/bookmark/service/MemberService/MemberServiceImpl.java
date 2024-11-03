@@ -60,16 +60,20 @@ public class MemberServiceImpl implements MemberService{
             // 회원탈퇴 여부 검증
             if(member.getIsDelete()==1){
                 throw new UserException(ErrorStatus.USER_NOT_FOUND);
-            }else{
-            String accessToken = jwtTokenProvider.createAccessToken(member.getId());
-            String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
-        //    refreshTokenService.saveToken(refreshToken);  redis관련
-            return AuthConverter.toOAuthResponse(accessToken, refreshToken, true, member);
+            } else {
+                String accessToken = jwtTokenProvider.createAccessToken(member.getId());
+                String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
+                member.updateToken(accessToken, refreshToken);
+                memberRepository.save(member);
+                //    refreshTokenService.saveToken(refreshToken);  redis관련
+                return AuthConverter.toOAuthResponse(accessToken, refreshToken, true, member);
             }
         } else {
             Member member = memberRepository.save(AuthConverter.toMember(kakaoProfile, makeNickname()));
             String accessToken = jwtTokenProvider.createAccessToken(member.getId());
             String refreshToken = jwtTokenProvider.createRefreshToken(member.getId());
+            member.updateToken(accessToken, refreshToken);
+            memberRepository.save(member);
         //    refreshTokenService.saveToken(refreshToken);
             return AuthConverter.toOAuthResponse(accessToken, refreshToken, false, member);
         }
@@ -78,7 +82,8 @@ public class MemberServiceImpl implements MemberService{
     @Override
     public String deleteMember(Member member) {
         try {
-            member.setIsDelete(1);
+            member.updateIsDelete(1);
+            memberRepository.save(member);
         } catch (Exception e) {
             throw new RuntimeException("삭제 실패");
         }

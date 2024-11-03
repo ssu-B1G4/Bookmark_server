@@ -23,7 +23,6 @@ public class Member extends BaseEntity {
     private String refreshToken;
     private String email;
 
-    @Setter
     @ColumnDefault("0")  //삭제시 1
     private int isDelete;
 
@@ -60,6 +59,10 @@ public class Member extends BaseEntity {
     public void updateToken(String accessToken, String refreshToken) {
         this.accessToken = accessToken;
         this.refreshToken = refreshToken;
+    }
+
+    public void updateIsDelete(Integer integer){
+        this.isDelete = integer;
     }
 
 
