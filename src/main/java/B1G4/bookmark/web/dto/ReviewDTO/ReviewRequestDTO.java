@@ -1,14 +1,12 @@
 package B1G4.bookmark.web.dto.ReviewDTO;
 
-import B1G4.bookmark.domain.enums.Noise;
-import B1G4.bookmark.domain.enums.Outlet;
-import B1G4.bookmark.domain.enums.Size;
-import B1G4.bookmark.domain.enums.Wifi;
+import B1G4.bookmark.domain.enums.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -21,4 +19,7 @@ public class ReviewRequestDTO {
     private Size size;
     private Wifi wifi;
     private Noise noise;
+
+    private List<Mood> moods;
+    private List<BookDTO> books;
 }

@@ -6,7 +6,10 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -63,21 +66,35 @@ public class Place extends BaseEntity {
     @OneToOne
     private Congestion congestion;
 
-    // 리뷰 추가
-    public void addReview(Review review) {
-        reviews.add(review);
-        review.setPlace(this);
-    }
-
-    // 리뷰 제거
-    public void removeReview(Review review) {
-        reviews.remove(review);
-        review.setPlace(null);
-    }
-
-    //리뷰 개수 +1
+    // 리뷰 개수 + 1
     public void addReviewCount() {
         if (this.reviewCount == null) this.reviewCount = 0;
         this.reviewCount++;
+    }
+
+    // 분위기 빈도수 저장 (각 분위기가 얼마나 선택되었는지)
+    @ElementCollection
+    @CollectionTable(name = "place_mood_frequency", joinColumns = @JoinColumn(name = "place_id"))
+    @MapKeyColumn(name = "mood")
+    @Column(name = "frequency")
+    @Builder.Default
+    private Map<Mood, Integer> moodFrequency = new HashMap<>();
+
+    public void incrementMoodCount(Mood mood) {
+        moodFrequency.put(mood, moodFrequency.getOrDefault(mood, 0) + 1);
+    }
+
+    public void decrementMoodCount(Mood mood) { // 리뷰 삭제 할 때
+        moodFrequency.put(mood, moodFrequency.getOrDefault(mood, 0) - 1);
+    }
+
+    public void updateMoods() {
+        List<Map.Entry<Mood, Integer>> topMoods = moodFrequency.entrySet().stream()
+                .sorted((e1, e2) -> e2.getValue().compareTo(e1.getValue()))
+                .limit(2)
+                .collect(Collectors.toList());
+
+        this.mood1 = topMoods.size() > 0 ? topMoods.get(0).getKey() : null;
+        this.mood2 = topMoods.size() > 1 ? topMoods.get(1).getKey() : null;
     }
 }
