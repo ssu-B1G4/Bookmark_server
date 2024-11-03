@@ -49,14 +49,4 @@ public class ReviewServiceImpl implements ReviewService{
 
         return review.getId();
     }
-
-    // 특정 장소의 리뷰에서 분위기를 집계하여 대표 분위기 2개 갱신
-    private void updatePlaceMoods(Place place, List<Mood> newReviewMoods) {
-       Map<Mood, Long> moodCOunt = new HashMap<>();
-
-       List<Review> reviews = reviewRepository.findByPlace(place);
-       for (Review review: reviews) {
-
-       }
-    }
 }
