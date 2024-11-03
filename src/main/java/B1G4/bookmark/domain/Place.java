@@ -77,6 +77,7 @@ public class Place extends BaseEntity {
 
     //리뷰 개수 +1
     public void addReviewCount() {
+        if (this.reviewCount == null) this.reviewCount = 0;
         this.reviewCount++;
     }
 }

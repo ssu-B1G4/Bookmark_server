@@ -2,6 +2,9 @@ package B1G4.bookmark.web.controller;
 
 import B1G4.bookmark.apiPayload.BaseResponse;
 import B1G4.bookmark.apiPayload.code.status.SuccessStatus;
+import B1G4.bookmark.domain.Member;
+import B1G4.bookmark.security.handler.annotation.AuthUser;
+import B1G4.bookmark.service.ReviewService.ReviewImgServiceImpl;
 import B1G4.bookmark.web.dto.ReviewDTO.ReviewRequestDTO;
 import B1G4.bookmark.service.ReviewService.ReviewServiceImpl;
 import B1G4.bookmark.web.dto.ReviewDTO.ReviewResponseDTO;
@@ -18,17 +21,26 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ReviewController {
 
-    private final ReviewServiceImpl reviewServiceImpl;
+    private final ReviewServiceImpl reviewService;
+    private final ReviewImgServiceImpl reviewImageService;
 
-    // memberId 파라미터로 받았는데 로그인 구현되면 jwt에서 뽑아오는걸로 바꿀게요
-    @PostMapping(value = "/reviews/{placeId}/{memberId}", consumes = "multipart/form-data")
+    @PostMapping(value = "/reviews/{placeId}", consumes = "multipart/form-data")
     public BaseResponse<ReviewResponseDTO> createReview(
             @PathVariable Long placeId,
-            @PathVariable Long memberId,
+            @AuthUser Member member,
             @RequestPart("reviewData") ReviewRequestDTO reviewRequestDTO,
-            @RequestPart(value = "images", required = false) List<MultipartFile> images  // 불필요한 쉼표 제거
+            @RequestPart(value = "images", required = false) List<MultipartFile> images
     ) {
-        Long reviewId = reviewServiceImpl.createReview(placeId, memberId, reviewRequestDTO, images);
+        Long memberId = member.getId();
+
+        // 리뷰 저장
+        Long reviewId = reviewService.createReview(placeId, memberId, reviewRequestDTO);
+
+        // 이미지 저장
+        if (images != null && !images.isEmpty()) {
+            reviewImageService.uploadImage(reviewId, images);
+        }
+
         ReviewResponseDTO responseDTO = new ReviewResponseDTO(reviewId);
         return BaseResponse.of(SuccessStatus.REVIEW_CREATE_OK, responseDTO);
     }
