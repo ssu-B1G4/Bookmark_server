@@ -100,17 +100,10 @@ public class MemberServiceImpl implements MemberService{
         Long id = jwtTokenProvider.getId(refreshToken);
         Member member = memberRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException(ErrorStatus.USER_NOT_FOUND.getMessage()));
-
-        /*
-                if (!refreshTokenService.isEqualsToken(refreshToken)) {
-            throw new AuthException(ErrorStatus.NOT_EQUAL_TOKEN);
-        }
-         */
-
         String newAccessToken =
-                jwtTokenProvider.createAccessToken(jwtTokenProvider.getId(refreshToken));
+                jwtTokenProvider.createAccessToken(id);
         String newRefreshToken =
-                jwtTokenProvider.createRefreshToken(jwtTokenProvider.getId(refreshToken));
+                jwtTokenProvider.createRefreshToken(id);
         member.updateToken(newAccessToken, newRefreshToken);
         memberRepository.save(member);
         // refreshTokenService.saveToken(newRefreshToken);
