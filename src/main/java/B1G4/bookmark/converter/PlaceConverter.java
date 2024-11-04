@@ -2,7 +2,9 @@ package B1G4.bookmark.converter;
 
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
+import B1G4.bookmark.domain.UserPlace;
 import B1G4.bookmark.repository.PlaceImgRepository;
+import B1G4.bookmark.repository.UserPlaceRepository;
 import B1G4.bookmark.service.MemberService.MemberServiceImpl;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
@@ -81,6 +83,13 @@ public class PlaceConverter {
                 .isLast(placeList.isLast())
                 .totalElements(placeList.getTotalElements())
                 .totalPage(placeList.getTotalPages())
+                .build();
+    }
+
+    public static UserPlace toUserPlace(Member member, Place place){
+        return UserPlace.builder()
+                .member(member)
+                .place(place)
                 .build();
     }
 }

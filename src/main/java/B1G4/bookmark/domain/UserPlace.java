@@ -1,6 +1,7 @@
 package B1G4.bookmark.domain;
 
 import B1G4.bookmark.domain.common.BaseEntity;
+import B1G4.bookmark.domain.enums.Mood;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -22,4 +23,10 @@ public class UserPlace extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @Builder
+    public UserPlace(Member member, Place place) {
+        this.member = member;
+        this.place = place;
+    }
 }
