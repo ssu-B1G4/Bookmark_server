@@ -17,4 +17,7 @@ public interface PlaceBookRepository extends JpaRepository<PlaceBook, Long> {
 
     @Query("SELECT pb.book FROM PlaceBook pb WHERE pb.place = :place")
     Page<Book> findBooksByPlace(@Param("place")Place place, Pageable pageable);
+
+    @Query("SELECT pb FROM PlaceBook pb WHERE pb.place = :place AND pb.book.title LIKE %:title%")
+    Page<PlaceBook> searchByPlaceAndTitle(@Param("place") Place place, @Param("title") String title, Pageable pageable);
 }

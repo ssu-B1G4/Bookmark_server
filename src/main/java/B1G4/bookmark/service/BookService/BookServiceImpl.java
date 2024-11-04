@@ -17,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,5 +62,23 @@ public class BookServiceImpl implements BookService {
         Page<Book> books = placeBookRepository.findBooksByPlace(place, pageable);
 
         return books.map(BookConverter::toBookPreviewDTO);
+    }
+
+    public BookResponseDTO.BookSearchDTO searchBooksByTitle(Long placeId, String title, int page, int size) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 ID를 가진 장소가 없습니다."));
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<PlaceBook> placeBooks = placeBookRepository.searchByPlaceAndTitle(place, title, pageable);
+
+        return BookResponseDTO.BookSearchDTO.builder()
+                .books(placeBooks.stream()
+                        .map(placeBook -> new BookResponseDTO.BookPreviewDTO(
+                                placeBook.getBook().getId(),
+                                placeBook.getBook().getTitle(),
+                                placeBook.getBook().getAuthor()))
+                        .collect(Collectors.toList()))
+                .totalBooks((int) placeBooks.getTotalElements())
+                .build();
     }
 }
