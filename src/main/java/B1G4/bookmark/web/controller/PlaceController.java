@@ -7,13 +7,17 @@ import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.repository.MemberRepository;
 import B1G4.bookmark.repository.PlaceImgRepository;
+import B1G4.bookmark.security.handler.annotation.AuthUser;
 import B1G4.bookmark.service.MemberService.MemberServiceImpl;
 import B1G4.bookmark.service.PlaceService.PlaceServiceImpl;
+import B1G4.bookmark.web.dto.MemberDTO.MemberResponseDTO;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.Parameters;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -134,6 +138,17 @@ public class PlaceController {
         Page<Place> filteredPlaceList = placeService.addFilter(placeList, mood, day, time, size, outlet, noise, wifi);
         PlaceResponseDTO.PlacePreviewListDTO response = PlaceConverter.toPlacePreviewList(filteredPlaceList, member, memberService, placeImgRepository);
         return BaseResponse.of(SuccessStatus.SEARCH_PLACE_OK, response);
+    }
+
+    @Operation(summary = "공간 저장(북마크) API", description = "공간을 저장(북마크)하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+    })
+    @PostMapping("/place/{placeId}/bookmark")
+    public BaseResponse<String> bookmarkPlace(@Parameter(name = "user", hidden = true) @AuthUser Member member,
+                                                                        @PathVariable Long placeId) {
+        placeService.bookmarkPlace(member, placeId);
+        return BaseResponse.onSuccess(SuccessStatus.BOOKMARK_PLACE_OK.getMessage());
     }
 
 }
