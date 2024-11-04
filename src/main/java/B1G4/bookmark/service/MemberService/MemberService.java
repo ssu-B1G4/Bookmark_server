@@ -15,4 +15,6 @@ public interface MemberService {
     String deleteMember(Member member);
 
     MemberResponseDTO.MyPageResponse getMyPageInfo(Member member);
+
+    AuthResponseDTO.TokenRefreshResponse refresh(String refreshToken);
 }

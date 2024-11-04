@@ -13,4 +13,13 @@ public class AuthResponseDTO {
         String refreshToken;
         Boolean isLogin;
     }
+
+    @Getter
+    @Builder
+    @AllArgsConstructor(access = AccessLevel.PROTECTED)
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class TokenRefreshResponse {
+        String accessToken;
+        String refreshToken;
+    }
 }

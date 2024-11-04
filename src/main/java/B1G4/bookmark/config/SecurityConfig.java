@@ -29,7 +29,8 @@ public class SecurityConfig {
             "/swagger-ui/**",
             "/swagger-resources/**",
             "/v3/api-docs/**",
-            "/login"
+            "/login",
+            "/refresh"
     };
 
     @Bean

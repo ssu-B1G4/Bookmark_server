@@ -3,7 +3,9 @@ package B1G4.bookmark.web.controller;
 import B1G4.bookmark.apiPayload.BaseResponse;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.security.handler.annotation.AuthUser;
+import B1G4.bookmark.security.handler.annotation.ExtractToken;
 import B1G4.bookmark.service.MemberService.MemberService;
+import B1G4.bookmark.web.dto.MemberDTO.AuthRequestDTO;
 import B1G4.bookmark.web.dto.MemberDTO.AuthResponseDTO;
 import B1G4.bookmark.web.dto.MemberDTO.MemberResponseDTO;
 import io.swagger.v3.oas.annotations.Operation;
@@ -36,6 +38,17 @@ public class MemberController {
     @DeleteMapping("/delete")
     public BaseResponse<String> deleteMember(@Parameter(name = "user", hidden = true) @AuthUser Member member) {
         return BaseResponse.onSuccess(memberService.deleteMember(member));
+    }
+
+    @Operation(
+            summary = "JWT Access Token 재발급 API",
+            description = "Refresh Token을 검증하고 새로운 Access Token과 Refresh Token을 응답합니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+    })
+    @PostMapping("/refresh")
+    public BaseResponse<AuthResponseDTO.TokenRefreshResponse> refresh(@RequestBody AuthRequestDTO.RefreshTokenDTO request) {
+        return BaseResponse.onSuccess(memberService.refresh(request.getRefreshToken()));
     }
 
     @Operation(summary = "마이페이지 API", description = "마이페이지의 회원 정보를 가져오는 API입니다.")
