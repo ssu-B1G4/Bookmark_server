@@ -151,4 +151,15 @@ public class PlaceController {
         return BaseResponse.onSuccess(SuccessStatus.BOOKMARK_PLACE_OK.getMessage());
     }
 
+    @Operation(summary = "공간 저장(북마크) 해제 API", description = "공간을 저장(북마크) 해제하는 API입니다.")
+    @ApiResponses({
+            @ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
+    })
+    @DeleteMapping("/place/{placeId}/bookmark")
+    public BaseResponse<String> unbookmarkPlace(@Parameter(name = "user", hidden = true) @AuthUser Member member,
+                                              @PathVariable Long placeId) {
+        placeService.unbookmarkPlace(member, placeId);
+        return BaseResponse.onSuccess(SuccessStatus.UNBOOKMARK_PLACE_OK.getMessage());
+    }
+
 }
