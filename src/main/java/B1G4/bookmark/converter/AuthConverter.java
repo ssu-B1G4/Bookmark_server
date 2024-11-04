@@ -22,4 +22,12 @@ public class AuthConverter {
                 .memberId(member.getId())
                 .build();
     }
+
+    public static AuthResponseDTO.TokenRefreshResponse toTokenRefreshResponse(
+            String accessToken, String refreshToken) {
+        return AuthResponseDTO.TokenRefreshResponse.builder()
+                .accessToken(accessToken)
+                .refreshToken(refreshToken)
+                .build();
+    }
 }
