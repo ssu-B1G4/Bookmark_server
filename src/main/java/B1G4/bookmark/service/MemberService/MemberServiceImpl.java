@@ -1,6 +1,7 @@
 package B1G4.bookmark.service.MemberService;
 
 import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
+import B1G4.bookmark.apiPayload.exception.AuthException;
 import B1G4.bookmark.apiPayload.exception.UserException;
 import B1G4.bookmark.converter.AuthConverter;
 import B1G4.bookmark.converter.MemberConverter;
@@ -91,6 +92,31 @@ public class MemberServiceImpl implements MemberService{
         }
         return "회원탈퇴 성공";
     }
+
+    @Override
+    @Transactional
+    public AuthResponseDTO.TokenRefreshResponse refresh(String refreshToken) {
+        jwtTokenProvider.isTokenValid(refreshToken);
+        Long id = jwtTokenProvider.getId(refreshToken);
+        Member member = memberRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException(ErrorStatus.USER_NOT_FOUND.getMessage()));
+
+        /*
+                if (!refreshTokenService.isEqualsToken(refreshToken)) {
+            throw new AuthException(ErrorStatus.NOT_EQUAL_TOKEN);
+        }
+         */
+
+        String newAccessToken =
+                jwtTokenProvider.createAccessToken(jwtTokenProvider.getId(refreshToken));
+        String newRefreshToken =
+                jwtTokenProvider.createRefreshToken(jwtTokenProvider.getId(refreshToken));
+        member.updateToken(newAccessToken, newRefreshToken);
+        memberRepository.save(member);
+        // refreshTokenService.saveToken(newRefreshToken);
+        return AuthConverter.toTokenRefreshResponse(newAccessToken, newRefreshToken);
+    }
+
 
     @Override
     public MemberResponseDTO.MyPageResponse getMyPageInfo(Member member) {
