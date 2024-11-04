@@ -50,7 +50,10 @@ public enum ErrorStatus implements BaseErrorCode {
     INVALID_DAY(HttpStatus.BAD_REQUEST, "PLACE_006", "잘못된 요일 입니다."),
     WIFI_NOT_FOUND(HttpStatus.NOT_FOUND, "PLACE_007", "필터에 해당하는 와이파이가 없습니다. 있어요/없어요 중에 선택해주세요."),
     INVALID_TIME_FILTER(HttpStatus.BAD_REQUEST, "PLACE_008", "운영 시간 필터가 잘못되었습니다. 필터를 적용할 시간과 요일을 함께 보내주세요"),
-    BOOKMARK_FAILED(HttpStatus.BAD_REQUEST, "PLACE_009", "해당 공간 북마크 등록에 실패하였습니다.")
+    BOOKMARK_FAILED(HttpStatus.BAD_REQUEST, "PLACE_009", "해당 공간 북마크 등록에 실패하였습니다."),
+    UNBOOKMARK_FAILED(HttpStatus.BAD_REQUEST, "PLACE_010", "해당 공간 북마크 해제에 실패하였습니다."),
+    USERPLACE_NOT_FOUND(HttpStatus.BAD_REQUEST, "PLACE_011", "해당 유저의 저장 공간이 존재하지 않습니다."),
+    PLACE_NOT_FOUND(HttpStatus.BAD_REQUEST, "PLACE_012", "해당 공간이 존재하지 않습니다."),
 
     ;
 

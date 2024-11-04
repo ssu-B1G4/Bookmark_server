@@ -21,6 +21,7 @@ public enum SuccessStatus implements BaseCode {
     NEARBY_PLACE_OK(HttpStatus.OK, "PLACE2004","근처 공간 조회가 완료되었습니다."),
     SEARCH_PLACE_OK(HttpStatus.OK, "PLACE2005", "공간 검색 결과 조회가 완료되었습니다."),
     BOOKMARK_PLACE_OK(HttpStatus.OK, "PLACE2006", "공간 저장(북마크)가 완료되었습니다."),
+    UNBOOKMARK_PLACE_OK(HttpStatus.OK, "PLACE2007", "공간 저장(북마크) 해제가 완료되었습니다."),
     ;
 
     private final HttpStatus httpStatus;
