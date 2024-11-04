@@ -3,7 +3,6 @@ package B1G4.bookmark.web.controller;
 import B1G4.bookmark.apiPayload.BaseResponse;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.security.handler.annotation.AuthUser;
-import B1G4.bookmark.security.handler.annotation.ExtractToken;
 import B1G4.bookmark.service.MemberService.MemberService;
 import B1G4.bookmark.web.dto.MemberDTO.AuthRequestDTO;
 import B1G4.bookmark.web.dto.MemberDTO.AuthResponseDTO;
