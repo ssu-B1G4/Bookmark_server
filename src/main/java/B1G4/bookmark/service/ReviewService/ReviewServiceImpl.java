@@ -4,12 +4,18 @@ import B1G4.bookmark.converter.ReviewConverter;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.domain.Review;
+import B1G4.bookmark.domain.enums.Mood;
 import B1G4.bookmark.repository.MemberRepository;
 import B1G4.bookmark.repository.PlaceRepository;
 import B1G4.bookmark.repository.ReviewRepository;
 import B1G4.bookmark.web.dto.ReviewDTO.ReviewRequestDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -30,6 +36,12 @@ public class ReviewServiceImpl implements ReviewService{
         Review review = ReviewConverter.toReview(reviewRequestDTO, place, member);
 
         reviewRepository.save(review);
+
+        for (Mood mood: reviewRequestDTO.getMoods()) {
+            place.incrementMoodCount(mood);
+        }
+
+        place.updateMoods();
 
         //리뷰 등록시 공간 리뷰개수 + 1
         place.addReviewCount();
