@@ -194,9 +194,9 @@ public class PlaceServiceImpl implements PlaceService{
         //요일 순서 유지를 위해 LinkedHashMap 사용
         Map<String, Map<String, String>> result = new LinkedHashMap<>();
         //요일 별 빈 map 생성
-        dayOrder.forEach(day -> result.put(day, new TreeMap<>()));
+        dayOrder.forEach(day -> result.put(day, new HashMap<>()));
         operatingTimeList.stream().forEach(operatingTime -> {
-            Map<String, String> timeMap = new TreeMap<>();
+            Map<String, String> timeMap = new HashMap<>();
             if(!operatingTime.getIsOff()){
                 timeMap.put("openTime", operatingTime.getOpenTime().format(formatter));
                 timeMap.put("closeTime", operatingTime.getCloseTime().format(formatter));
