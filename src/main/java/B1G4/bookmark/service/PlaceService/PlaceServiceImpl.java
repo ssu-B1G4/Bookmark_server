@@ -1,7 +1,7 @@
 package B1G4.bookmark.service.PlaceService;
 
 import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
-import B1G4.bookmark.apiPayload.code.status.SuccessStatus;
+import B1G4.bookmark.apiPayload.exception.handler.PlaceHandler;
 import B1G4.bookmark.converter.PlaceConverter;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
@@ -157,8 +157,8 @@ public class PlaceServiceImpl implements PlaceService{
                     isOpen(place, time, day)
                     );
         }
-//        else if(day != null || time != null)
-//            throw new PlaceHandler(ErrorStatus.INVALID_TIME_FILTER);
+        else if(day != null || time != null)
+            throw new PlaceHandler(ErrorStatus.INVALID_TIME_FILTER);
         //공간 크기 필터
         if(size != null && !size.isEmpty()){
             filteredStream = filteredStream.filter(place ->
@@ -193,11 +193,10 @@ public class PlaceServiceImpl implements PlaceService{
         List<String> dayOrder = Arrays.asList("월요일", "화요일", "수요일", "목요일", "금요일", "토요일", "일요일");
         //요일 순서 유지를 위해 LinkedHashMap 사용
         Map<String, Map<String, String>> result = new LinkedHashMap<>();
-        //openTime이 먼저 뜨도록 TreeMap 사용
         //요일 별 빈 map 생성
-        dayOrder.forEach(day -> result.put(day, new TreeMap<>()));
+        dayOrder.forEach(day -> result.put(day, new HashMap<>()));
         operatingTimeList.stream().forEach(operatingTime -> {
-            Map<String, String> timeMap = new TreeMap<>();
+            Map<String, String> timeMap = new HashMap<>();
             if(!operatingTime.getIsOff()){
                 timeMap.put("openTime", operatingTime.getOpenTime().format(formatter));
                 timeMap.put("closeTime", operatingTime.getCloseTime().format(formatter));
