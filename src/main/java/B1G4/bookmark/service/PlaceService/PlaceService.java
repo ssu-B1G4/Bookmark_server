@@ -1,5 +1,6 @@
 package B1G4.bookmark.service.PlaceService;
 
+import B1G4.bookmark.apiPayload.code.status.SuccessStatus;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
@@ -18,4 +19,6 @@ public interface PlaceService {
     Map<String, Map<String, String>> getOperatingTime(Place place);
     Boolean isOpen(Place place, String filterTime, String dayOfWeek);
     Page<Place> addFilter(Page<Place> places, String mood, String day, String time, String size, String outlet, String noise, String wifi);
+    void bookmarkPlace(Member member, Long placeId);
+    void unbookmarkPlace(Member member, Long placeId);
 }

@@ -1,13 +1,17 @@
 package B1G4.bookmark.service.PlaceService;
 
+import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
+import B1G4.bookmark.apiPayload.code.status.SuccessStatus;
 import B1G4.bookmark.converter.PlaceConverter;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.domain.OperatingTime;
+import B1G4.bookmark.domain.UserPlace;
 import B1G4.bookmark.domain.enums.*;
 import B1G4.bookmark.repository.OperatingTimeRepository;
 import B1G4.bookmark.repository.PlaceImgRepository;
 import B1G4.bookmark.repository.PlaceRepository;
+import B1G4.bookmark.repository.UserPlaceRepository;
 import B1G4.bookmark.service.MemberService.MemberServiceImpl;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
@@ -42,6 +46,7 @@ public class PlaceServiceImpl implements PlaceService{
     private final MemberServiceImpl memberService;
     private final PlaceImgRepository placeImgRepository;
     private final OperatingTimeRepository operatingTimeRepository;
+    private final UserPlaceRepository userPlaceRepository;
     private static final Double EARTH_RADIUS = 6371.0;
 
     @Override
@@ -224,6 +229,32 @@ public class PlaceServiceImpl implements PlaceService{
             } else {  // 자정을 넘어가는 경우 (예: 22:00 ~ 02:00)
                 return !time.isBefore(open) || !time.isAfter(close);
             }
+        }
+    }
+
+    @Override
+    public void bookmarkPlace(Member member, Long placeId){
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new RuntimeException(ErrorStatus.PLACE_NOT_FOUND.getMessage()));
+        try {
+            userPlaceRepository.save(PlaceConverter.toUserPlace(member, place));
+        }catch (Exception e){
+            throw new RuntimeException(ErrorStatus.BOOKMARK_FAILED.getMessage());
+        }
+    }
+
+    @Override
+    public void unbookmarkPlace(Member member, Long placeId){
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new RuntimeException(ErrorStatus.PLACE_NOT_FOUND.getMessage()));
+
+        UserPlace userPlace = userPlaceRepository.findByMemberAndPlace(member, place)
+                .orElseThrow(() -> new RuntimeException(ErrorStatus.USERPLACE_NOT_FOUND.getMessage()));
+
+        try {
+            userPlaceRepository.delete(userPlace);
+        }catch (Exception e){
+            throw new RuntimeException(ErrorStatus.UNBOOKMARK_FAILED.getMessage());
         }
     }
 }
