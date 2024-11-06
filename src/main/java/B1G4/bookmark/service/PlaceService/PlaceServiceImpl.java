@@ -232,14 +232,13 @@ public class PlaceServiceImpl implements PlaceService{
     }
 
     @Override
-    public void bookmarkPlace(Member member, Long placeId){
+    public void bookmarkPlace(Member member, Long placeId) {
         Place place = placeRepository.findById(placeId)
                 .orElseThrow(() -> new RuntimeException(ErrorStatus.PLACE_NOT_FOUND.getMessage()));
-        try {
+
+        if (userPlaceRepository.findByMemberAndPlace(member, place).isEmpty()) {
             userPlaceRepository.save(PlaceConverter.toUserPlace(member, place));
-        }catch (Exception e){
-            throw new RuntimeException(ErrorStatus.BOOKMARK_FAILED.getMessage());
-        }
+        } else throw new RuntimeException(ErrorStatus.BOOKMARK_FAILED.getMessage());
     }
 
     @Override
