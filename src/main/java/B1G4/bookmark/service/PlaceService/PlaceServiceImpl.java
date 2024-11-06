@@ -256,4 +256,12 @@ public class PlaceServiceImpl implements PlaceService{
             throw new RuntimeException(ErrorStatus.UNBOOKMARK_FAILED.getMessage());
         }
     }
+
+    @Override
+    public PlaceResponseDTO.BookmarkPlaceListDTO getBookmarkPlaceList(Member member, int page){
+        PageRequest pageRequest = PageRequest.of((page-1), 10);
+        Page<UserPlace> userPlaces = userPlaceRepository.findByMember(member, pageRequest);
+
+        return PlaceConverter.toBookmarkPlaceList(userPlaces);
+    }
 }

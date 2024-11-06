@@ -21,4 +21,5 @@ public interface PlaceService {
     Page<Place> addFilter(Page<Place> places, String mood, String day, String time, String size, String outlet, String noise, String wifi);
     void bookmarkPlace(Member member, Long placeId);
     void unbookmarkPlace(Member member, Long placeId);
+    PlaceResponseDTO.BookmarkPlaceListDTO getBookmarkPlaceList(Member member, int page);
 }
