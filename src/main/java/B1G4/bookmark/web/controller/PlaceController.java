@@ -129,7 +129,7 @@ public class PlaceController {
     @ApiResponses({
             @ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
     })
-    @PostMapping("/place/{placeId}/bookmark")
+    @PostMapping("/place/{placeId}/bookmarks")
     public BaseResponse<String> bookmarkPlace(@Parameter(name = "user", hidden = true) @AuthUser Member member,
                                                                         @PathVariable Long placeId) {
         placeService.bookmarkPlace(member, placeId);
@@ -140,7 +140,7 @@ public class PlaceController {
     @ApiResponses({
             @ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
     })
-    @DeleteMapping("/place/{placeId}/bookmark")
+    @DeleteMapping("/place/{placeId}/bookmarks")
     public BaseResponse<String> unbookmarkPlace(@Parameter(name = "user", hidden = true) @AuthUser Member member,
                                               @PathVariable Long placeId) {
         placeService.unbookmarkPlace(member, placeId);
