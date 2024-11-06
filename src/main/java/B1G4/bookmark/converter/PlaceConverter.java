@@ -92,4 +92,25 @@ public class PlaceConverter {
                 .place(place)
                 .build();
     }
+
+    public static PlaceResponseDTO.BookmarkPlaceListDTO toBookmarkPlaceList(Page<UserPlace> userPlaces) {
+        return PlaceResponseDTO.BookmarkPlaceListDTO.builder()
+                .bookmarkPlaceList(userPlaces.getContent().stream().map(userPlace ->
+                        PlaceResponseDTO.BookMarkPlaceDTO.builder()
+                                .placeId(userPlace.getId())
+                                .name(userPlace.getPlace().getName())
+                                .address(userPlace.getPlace().getAddress())
+                                .img(userPlace.getPlace().getUrl())
+                                .build()
+                ).toList())
+                .listSize(userPlaces.getNumberOfElements())
+                .totalPage(userPlaces.getTotalPages())
+                .totalElements(userPlaces.getTotalElements())
+                .isFirst(userPlaces.isFirst())
+                .isLast(userPlaces.isLast())
+                .build();
+    }
+
+
+    
 }

@@ -68,4 +68,28 @@ public class PlaceResponseDTO {
         String url;
         Map<String, Map<String, String>> operatingTimeList;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BookmarkPlaceListDTO {
+        List<BookMarkPlaceDTO> bookmarkPlaceList;
+        Integer listSize;
+        Integer totalPage;
+        Long totalElements;
+        Boolean isFirst;
+        Boolean isLast;
+    }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BookMarkPlaceDTO {
+        Long placeId;
+        String name;
+        String address;
+        String img;
+    }
 }

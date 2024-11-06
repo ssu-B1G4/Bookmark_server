@@ -147,4 +147,16 @@ public class PlaceController {
         return BaseResponse.onSuccess(SuccessStatus.UNBOOKMARK_PLACE_OK.getMessage());
     }
 
+    @Operation(summary = "저장 공간 검색 결과 조회", description = "사용자의 저장 공간 검색 결과를 조회합니다.")
+    @Parameters({
+            @Parameter(name = "page", description = "페이지 번호, 1번이 1 페이지 입니다.")
+    })
+    @GetMapping("/places/bookmarks")
+    public BaseResponse<PlaceResponseDTO.BookmarkPlaceListDTO> getBookmarkPlaceList(
+            @RequestParam(name = "page", defaultValue = "1") int page,
+            @Parameter(name = "user", hidden = true) @AuthUser Member member) {
+        PlaceResponseDTO.BookmarkPlaceListDTO response = placeService.getBookmarkPlaceList(member, page);
+        return BaseResponse.of(SuccessStatus.BOOKMARK_PLACE_LIST_OK, response);
+    }
+
 }
