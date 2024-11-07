@@ -17,6 +17,7 @@ public enum SuccessStatus implements BaseCode {
     REVIEW_FETCH_OK(HttpStatus.OK, "REVIEW200", "리뷰 목록 조회 성공"),
     // 책
     BOOK_FETCH_OK(HttpStatus.OK, "BOOK200", "도서 목록 조회 성공"),
+    BOOK_SEARCH_OK(HttpStatus.OK, "BOOK201", "도서 검색 결과 조회가 완료되었습니다."),
     // 장소
     PLACE_CREATE_OK(HttpStatus.OK, "PLACE2001", "공간 등록이 완료되었습니다."),
     PLACE_PREVIEW_OK(HttpStatus.OK, "PLACE2002", "공간 미리보기가 완료되었습니다."),

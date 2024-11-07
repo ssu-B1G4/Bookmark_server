@@ -41,4 +41,13 @@ public class BookResponseDTO {
                     .build();
         }
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BookSearchDTO {
+        private List<BookPreviewDTO> books;
+        private int totalBooks;
+    }
 }

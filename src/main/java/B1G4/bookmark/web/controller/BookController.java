@@ -41,4 +41,26 @@ public class BookController {
 
         return BaseResponse.of(SuccessStatus.BOOK_FETCH_OK, responseDTO);
     }
+
+    @Operation(
+            summary = "특정 장소의 도서 제목 검색 API",
+            description = "특정 장소에서 책 제목을 검색어로 입력하여 일치하는 도서 목록과 총 도서 수를 반환합니다."
+    )
+    @GetMapping("/books/{placeId}/search")
+    public BaseResponse<BookResponseDTO.BookSearchDTO> searchBooksByTitle(
+            @Parameter(description = "도서를 조회할 장소 ID", required = true)
+            @PathVariable Long placeId,
+
+            @Parameter(description = "검색할 책 제목", required = true)
+            @RequestParam String search,
+
+            @Parameter(description = "페이지 번호 (기본값: 0)")
+            @RequestParam(defaultValue = "0") int page,
+
+            @Parameter(description = "페이지당 항목 수 (기본값: 10)")
+            @RequestParam(defaultValue = "10") int size) {
+
+        BookResponseDTO.BookSearchDTO responseDTO = bookService.searchBooksByTitle(placeId, search, page, size);
+        return BaseResponse.of(SuccessStatus.BOOK_SEARCH_OK, responseDTO);
+    }
 }
