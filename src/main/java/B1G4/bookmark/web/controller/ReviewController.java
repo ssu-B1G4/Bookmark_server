@@ -58,7 +58,6 @@ public class ReviewController {
             reviewImageService.uploadImage(reviewId, images);
         }
 
-        // ReviewIdDTO 반환
         ReviewResponseDTO.ReviewIdDTO responseDTO = ReviewResponseDTO.ReviewIdDTO.builder()
                 .reviewId(reviewId)
                 .build();
@@ -84,13 +83,7 @@ public class ReviewController {
 
         Page<ReviewResponseDTO.ReviewPreviewDTO> reviews = reviewService.getReviewsByPlace(placeId, page, size);
 
-        ReviewResponseDTO.ReviewListDTO responseDTO = ReviewResponseDTO.ReviewListDTO.builder()
-                .reviewPreviewList(reviews.getContent())
-                .totalPages(reviews.getTotalPages())
-                .totalElements(reviews.getTotalElements())
-                .isFirst(reviews.isFirst())
-                .isLast(reviews.isLast())
-                .build();
+        ReviewResponseDTO.ReviewListDTO responseDTO = ReviewResponseDTO.ReviewListDTO.from(reviews);
 
         return BaseResponse.of(SuccessStatus.REVIEW_FETCH_OK, responseDTO);
     }

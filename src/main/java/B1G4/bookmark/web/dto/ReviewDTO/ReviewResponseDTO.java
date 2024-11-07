@@ -1,6 +1,7 @@
 package B1G4.bookmark.web.dto.ReviewDTO;
 
 import lombok.*;
+import org.springframework.data.domain.Page;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -39,6 +40,16 @@ public class ReviewResponseDTO {
         private Long totalElements;
         private Boolean isFirst;
         private Boolean isLast;
+
+        public static ReviewListDTO from(Page<ReviewPreviewDTO> reviewPage) {
+            return ReviewListDTO.builder()
+                    .reviewPreviewList(reviewPage.getContent())
+                    .totalPages(reviewPage.getTotalPages())
+                    .totalElements(reviewPage.getTotalElements())
+                    .isFirst(reviewPage.isFirst())
+                    .isLast(reviewPage.isLast())
+                    .build();
+        }
     }
 
     // 리뷰 상세 조회 시 모든 정보를 포함하는 DTO

@@ -1,18 +1,22 @@
 package B1G4.bookmark.service.BookService;
 
+import B1G4.bookmark.converter.BookConverter;
 import B1G4.bookmark.domain.Book;
 import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.domain.PlaceBook;
 import B1G4.bookmark.repository.BookRepository;
 import B1G4.bookmark.repository.PlaceBookRepository;
 import B1G4.bookmark.repository.PlaceRepository;
+import B1G4.bookmark.web.dto.BookDTO.BookResponseDTO;
 import B1G4.bookmark.web.dto.ReviewDTO.BookDTO;
-import B1G4.bookmark.web.dto.ReviewDTO.ReviewRequestDTO;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -46,5 +50,16 @@ public class BookServiceImpl implements BookService {
                 }
             });
         }
+    }
+
+    @Transactional
+    public Page<BookResponseDTO.BookPreviewDTO> getBooksByPlace(Long placeId, int page, int size) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id를 갖는 장소 없음"));
+
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Book> books = placeBookRepository.findBooksByPlace(place, pageable);
+
+        return books.map(BookConverter::toBookPreviewDTO);
     }
 }
