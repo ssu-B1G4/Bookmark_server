@@ -5,6 +5,8 @@ import B1G4.bookmark.domain.enums.*;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.List;
+
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -32,8 +34,10 @@ public class ReportPlace extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Noise noise;
 
+    @ElementCollection
+    @CollectionTable(name = "report_place_mood" ,joinColumns = @JoinColumn(name = "report_place_id"))
     @Enumerated(EnumType.STRING)
-    private Mood mood;
+    private List<Mood> moods;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

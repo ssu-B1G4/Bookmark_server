@@ -3,6 +3,9 @@ package B1G4.bookmark.converter;
 import B1G4.bookmark.domain.Congestion;
 
 import java.time.LocalTime;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class CongestionConverter {
     public static Congestion updateCongestion(Congestion congestion, LocalTime startTime, LocalTime endTime, float congestionLevel, int totalReviewCount) {
@@ -93,5 +96,17 @@ public class CongestionConverter {
             case 23 -> builder.twentyThree(value);
             default -> builder;
         };
+    }
+
+    public static Map<String, Integer> filterAndRoundCongestion(Congestion congestion, LocalTime openTime, LocalTime closeTime) {
+        Map<String, Integer> filteredCongestion = new LinkedHashMap<>();
+
+        for (int hour = openTime.getHour(); hour <= closeTime.getHour(); hour++) {
+            float congestionLevel = getCongestionLevel(congestion, hour);
+            int roundedValue = Math.round(congestionLevel);
+            filteredCongestion.put(hour + ":00", roundedValue);
+        }
+
+        return filteredCongestion;
     }
 }
