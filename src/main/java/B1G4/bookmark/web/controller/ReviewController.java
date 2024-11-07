@@ -76,12 +76,9 @@ public class ReviewController {
             @PathVariable Long placeId,
 
             @Parameter(description = "페이지 번호 (기본값: 0)")
-            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "1") int page) {
 
-            @Parameter(description = "페이지당 항목 수 (기본값: 10)")
-            @RequestParam(defaultValue = "10") int size) {
-
-        Page<ReviewResponseDTO.ReviewPreviewDTO> reviews = reviewService.getReviewsByPlace(placeId, page, size);
+        Page<ReviewResponseDTO.ReviewPreviewDTO> reviews = reviewService.getReviewsByPlace(placeId, page);
 
         ReviewResponseDTO.ReviewListDTO responseDTO = ReviewResponseDTO.ReviewListDTO.from(reviews);
 
