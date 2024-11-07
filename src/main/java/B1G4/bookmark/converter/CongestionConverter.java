@@ -38,7 +38,7 @@ public class CongestionConverter {
         return updatedBuilder.build();
     }
 
-    private static float getCongestionLevel(Congestion congestion, int hour) {
+    public static float getCongestionLevel(Congestion congestion, int hour) {
         return switch (hour) {
             case 0 -> congestion.getZero();
             case 1 -> congestion.getOne();

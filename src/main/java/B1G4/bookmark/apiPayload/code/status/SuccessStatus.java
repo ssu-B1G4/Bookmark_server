@@ -31,7 +31,8 @@ public enum SuccessStatus implements BaseCode {
     // 제보 장소
     REPORT_PLACE_CREATE_OK(HttpStatus.OK, "REPORTPLACE201", "공간 제보 성공"),
     // 혼잡도
-    CONGESTION_FETCH_OK(HttpStatus.OK, "CONGESTION200", "혼잡도 조회 성공")
+    CONGESTION_GRAPH_OK(HttpStatus.OK, "CONGESTION200", "혼잡도 그래프 조회 성공"),
+    CONGESTION_STATUS_OK(HttpStatus.OK, "CONGESTION201", "현재 혼잡도 상태 값 조회 성공")
     ;
 
     private final HttpStatus httpStatus;
