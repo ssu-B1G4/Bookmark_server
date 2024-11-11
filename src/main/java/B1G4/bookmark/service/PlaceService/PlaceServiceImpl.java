@@ -1,6 +1,7 @@
 package B1G4.bookmark.service.PlaceService;
 
 import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
+import B1G4.bookmark.apiPayload.exception.UserException;
 import B1G4.bookmark.apiPayload.exception.handler.PlaceHandler;
 import B1G4.bookmark.converter.PlaceConverter;
 import B1G4.bookmark.domain.Member;
@@ -234,25 +235,25 @@ public class PlaceServiceImpl implements PlaceService{
     @Override
     public void bookmarkPlace(Member member, Long placeId) {
         Place place = placeRepository.findById(placeId)
-                .orElseThrow(() -> new RuntimeException(ErrorStatus.PLACE_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new UserException(ErrorStatus.PLACE_NOT_FOUND));
 
         if (userPlaceRepository.findByMemberAndPlace(member, place).isEmpty()) {
             userPlaceRepository.save(PlaceConverter.toUserPlace(member, place));
-        } else throw new RuntimeException(ErrorStatus.BOOKMARK_FAILED.getMessage());
+        } else throw new UserException(ErrorStatus.BOOKMARK_FAILED);
     }
 
     @Override
     public void unbookmarkPlace(Member member, Long placeId){
         Place place = placeRepository.findById(placeId)
-                .orElseThrow(() -> new RuntimeException(ErrorStatus.PLACE_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new UserException(ErrorStatus.PLACE_NOT_FOUND));
 
         UserPlace userPlace = userPlaceRepository.findByMemberAndPlace(member, place)
-                .orElseThrow(() -> new RuntimeException(ErrorStatus.USERPLACE_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new UserException(ErrorStatus.USERPLACE_NOT_FOUND));
 
         try {
             userPlaceRepository.delete(userPlace);
         }catch (Exception e){
-            throw new RuntimeException(ErrorStatus.UNBOOKMARK_FAILED.getMessage());
+            throw new UserException(ErrorStatus.UNBOOKMARK_FAILED);
         }
     }
 
