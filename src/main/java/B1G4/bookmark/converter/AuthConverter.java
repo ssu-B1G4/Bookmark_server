@@ -14,11 +14,10 @@ public class AuthConverter {
     }
 
     public static AuthResponseDTO.OAuthResponse toOAuthResponse(
-            String accessToken, String refreshToken, Boolean isLogin, Member member) {
+            String accessToken, String refreshToken, Member member) {
         return AuthResponseDTO.OAuthResponse.builder()
                 .refreshToken(refreshToken)
                 .accessToken(accessToken)
-                .isLogin(isLogin)
                 .memberId(member.getId())
                 .build();
     }

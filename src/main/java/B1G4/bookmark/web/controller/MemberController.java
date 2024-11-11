@@ -1,6 +1,7 @@
 package B1G4.bookmark.web.controller;
 
 import B1G4.bookmark.apiPayload.BaseResponse;
+import B1G4.bookmark.apiPayload.code.status.SuccessStatus;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.security.handler.annotation.AuthUser;
 import B1G4.bookmark.service.MemberService.MemberService;
@@ -20,42 +21,34 @@ import org.springframework.web.bind.annotation.*;
 public class MemberController {
     private final MemberService memberService;
 
+    @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "카카오 로그인 API", description = "카카오 로그인 및 회원 가입을 진행하는 API입니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-    })
     @GetMapping("/login")
     public BaseResponse<AuthResponseDTO.OAuthResponse> kakaoLogin(@RequestParam("code") String code) {
-        return BaseResponse.onSuccess(memberService.kakaoLogin(code));
+        return BaseResponse.of(SuccessStatus.USER_LOGIN_OK, memberService.kakaoLogin(code));
     }
 
     @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "회원탈퇴 API", description = "회원을 삭제하는 API입니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "COMMON200", description = "삭제 성공")
-    })
     @DeleteMapping("/delete")
     public BaseResponse<String> deleteMember(@Parameter(name = "user", hidden = true) @AuthUser Member member) {
-        return BaseResponse.onSuccess(memberService.deleteMember(member));
+        memberService.deleteMember(member);
+        return BaseResponse.of(SuccessStatus.USER_DELETE_OK, null );
     }
 
+    @ResponseStatus(code = HttpStatus.OK)
     @Operation(
             summary = "JWT Access Token 재발급 API",
             description = "Refresh Token을 검증하고 새로운 Access Token과 Refresh Token을 응답합니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-    })
     @PostMapping("/refresh")
     public BaseResponse<AuthResponseDTO.TokenRefreshResponse> refresh(@RequestBody AuthRequestDTO.RefreshTokenDTO request) {
-        return BaseResponse.onSuccess(memberService.refresh(request.getRefreshToken()));
+        return BaseResponse.of(SuccessStatus.USER_REFRESH_OK, memberService.refresh(request.getRefreshToken()));
     }
 
+    @ResponseStatus(code = HttpStatus.OK)
     @Operation(summary = "마이페이지 API", description = "마이페이지의 회원 정보를 가져오는 API입니다.")
-    @ApiResponses({
-            @ApiResponse(responseCode = "COMMON200", description = "OK, 성공"),
-    })
     @GetMapping("/mypage")
     public BaseResponse<MemberResponseDTO.MyPageResponse> getMyPageInfo(@Parameter(name = "user", hidden = true) @AuthUser Member member) {
-        return BaseResponse.onSuccess(memberService.getMyPageInfo(member));
+        return BaseResponse.of(SuccessStatus.MYPAGE_OK, memberService.getMyPageInfo(member));
     }
 }
