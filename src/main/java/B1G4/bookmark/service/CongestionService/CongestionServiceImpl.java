@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.format.TextStyle;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Optional;
@@ -23,7 +24,6 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CongestionServiceImpl implements CongestionService {
 
-    private final CongestionRepository congestionRepository;
     private final PlaceRepository placeRepository;
     private final OperatingTimeRepository operatingTimeRepository;
 
@@ -41,15 +41,13 @@ public class CongestionServiceImpl implements CongestionService {
         LocalTime openTime = operatingTime.getOpenTime();
         LocalTime closeTime = operatingTime.getCloseTime();
 
-        // 혼잡도 데이터 가져오기
         Congestion congestion = place.getCongestion();
         if (congestion == null) {
             throw new IllegalArgumentException("해당 공간의 혼잡도 데이터가 존재하지 않습니다.");
         }
 
-        // 운영 시간에 맞는 혼잡도 데이터만 필터링하여 반환
-        Map<String, Integer> congestionData = CongestionConverter.filterAndRoundCongestion(congestion, openTime, closeTime);
+        List<CongestionResponseDTO.HourValueDTO> congestionData = CongestionConverter.filterAndRoundCongestion(congestion, openTime, closeTime);
 
-        return new CongestionResponseDTO(placeId, congestionData);
+        return new CongestionResponseDTO(congestionData);
     }
 }
