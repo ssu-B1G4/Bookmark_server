@@ -1,7 +1,7 @@
 package B1G4.bookmark.service.BookService;
 
 import B1G4.bookmark.web.dto.BookDTO.BookResponseDTO;
-import B1G4.bookmark.web.dto.ReviewDTO.BookDTO;
+import B1G4.bookmark.web.dto.BookDTO.BookDTO;
 import org.springframework.data.domain.Page;
 
 import java.util.List;

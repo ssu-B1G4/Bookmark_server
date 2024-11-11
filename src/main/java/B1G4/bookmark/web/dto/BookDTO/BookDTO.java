@@ -1,4 +1,4 @@
-package B1G4.bookmark.web.dto.ReviewDTO;
+package B1G4.bookmark.web.dto.BookDTO;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -5,6 +5,7 @@ import B1G4.bookmark.domain.enums.*;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -19,7 +20,7 @@ public class ReportPlace extends BaseEntity {
     private Long id;
 
     private String name;
-    private String address;
+    private String address; // 도로명 주소
     private String content;
 
     @Enumerated(EnumType.STRING)
@@ -34,10 +35,24 @@ public class ReportPlace extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private Noise noise;
 
-    @ElementCollection
-    @CollectionTable(name = "report_place_mood" ,joinColumns = @JoinColumn(name = "report_place_id"))
     @Enumerated(EnumType.STRING)
-    private List<Mood> moods;
+    private Category category;
+
+    @ElementCollection
+    @CollectionTable(name = "report_place_images", joinColumns = @JoinColumn(name = "report_place_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"report_place_id", "image_url"}))
+    @Column(name = "image_url")
+    private List<String> imageUrls = new ArrayList<>();
+
+    @ElementCollection(targetClass = Mood.class)
+    @CollectionTable(name = "report_place_moods", joinColumns = @JoinColumn(name = "report_place_id"),
+            uniqueConstraints = @UniqueConstraint(columnNames = {"report_place_id", "mood"}))
+    @Enumerated(EnumType.STRING)
+    @Column(name = "moods")
+    private List<Mood> moods = new ArrayList<>();
+
+    private String author;
+    private String title;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")

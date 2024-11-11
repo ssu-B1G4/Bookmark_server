@@ -1,6 +1,7 @@
 package B1G4.bookmark.web.dto.ReviewDTO;
 
 import B1G4.bookmark.domain.enums.*;
+import B1G4.bookmark.web.dto.BookDTO.BookDTO;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 

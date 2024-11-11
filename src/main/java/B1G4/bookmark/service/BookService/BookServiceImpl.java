@@ -8,7 +8,7 @@ import B1G4.bookmark.repository.BookRepository;
 import B1G4.bookmark.repository.PlaceBookRepository;
 import B1G4.bookmark.repository.PlaceRepository;
 import B1G4.bookmark.web.dto.BookDTO.BookResponseDTO;
-import B1G4.bookmark.web.dto.ReviewDTO.BookDTO;
+import B1G4.bookmark.web.dto.BookDTO.BookDTO;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
