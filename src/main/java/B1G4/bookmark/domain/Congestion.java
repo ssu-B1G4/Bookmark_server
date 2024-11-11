@@ -7,7 +7,7 @@ import lombok.*;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@Builder
+@Builder(toBuilder = true)
 @AllArgsConstructor
 public class Congestion extends BaseEntity {
 
@@ -15,29 +15,29 @@ public class Congestion extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer zero;
-    private Integer one;
-    private Integer two;
-    private Integer three;
-    private Integer four;
-    private Integer five;
-    private Integer six;
-    private Integer seven;
-    private Integer eight;
-    private Integer nine;
-    private Integer ten;
-    private Integer eleven;
-    private Integer twelve;
-    private Integer thirteen;
-    private Integer fourteen;
-    private Integer fifteen;
-    private Integer sixteen;
-    private Integer seventeen;
-    private Integer eighteen;
-    private Integer nineteen;
-    private Integer twenty;
-    private Integer twentyOne;
-    private Integer twentyTwo;
-    private Integer twentyThree;
-    private Integer twentyFour;
+    private Float zero;
+    private Float one;
+    private Float two;
+    private Float three;
+    private Float four;
+    private Float five;
+    private Float six;
+    private Float seven;
+    private Float eight;
+    private Float nine;
+    private Float ten;
+    private Float eleven;
+    private Float twelve;
+    private Float thirteen;
+    private Float fourteen;
+    private Float fifteen;
+    private Float sixteen;
+    private Float seventeen;
+    private Float eighteen;
+    private Float nineteen;
+    private Float twenty;
+    private Float twentyOne;
+    private Float twentyTwo;
+    private Float twentyThree;
+    private Float twentyFour;
 }

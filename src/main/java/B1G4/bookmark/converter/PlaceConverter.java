@@ -1,5 +1,6 @@
 package B1G4.bookmark.converter;
 
+import B1G4.bookmark.domain.Congestion;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.domain.UserPlace;
@@ -111,6 +112,29 @@ public class PlaceConverter {
                 .build();
     }
 
-
-    
+    public static Place withUpdatedCongestion(Place place, Congestion newCongestion) {
+        return Place.builder()
+                .id(place.getId())
+                .name(place.getName())
+                .address(place.getAddress())
+                .outlet(place.getOutlet())
+                .size(place.getSize())
+                .wifi(place.getWifi())
+                .noise(place.getNoise())
+                .mood1(place.getMood1())
+                .mood2(place.getMood2())
+                .category(place.getCategory())
+                .phone(place.getPhone())
+                .url(place.getUrl())
+                .summary(place.getSummary())
+                .latitude(place.getLatitude())
+                .longitude(place.getLongitude())
+                .reviewCount(place.getReviewCount())
+                .congestion(newCongestion) // Associate new congestion
+                .placeImgList(place.getPlaceImgList())
+                .placeTimeList(place.getPlaceTimeList())
+                .reviews(place.getReviews())
+                .moodFrequency(place.getMoodFrequency())
+                .build();
+    }
 }

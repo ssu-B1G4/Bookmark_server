@@ -27,12 +27,14 @@ public enum SuccessStatus implements BaseCode {
     BOOKMARK_PLACE_OK(HttpStatus.OK, "PLACE2006", "공간 저장(북마크)가 완료되었습니다."),
     UNBOOKMARK_PLACE_OK(HttpStatus.OK, "PLACE2007", "공간 저장(북마크) 해제가 완료되었습니다."),
     BOOKMARK_PLACE_LIST_OK(HttpStatus.OK, "PLACE2008","공간 저장 리스트 조회가 완료되었습니다."),
+    PLACE_RECOMMEND_OK(HttpStatus.OK, "PLACE2009", "추천 공간 리스트 조회가 완료되었습니다."),
 
     //회원
     USER_LOGIN_OK(HttpStatus.OK, "AUTH2001", "회원 로그인이 완료되었습니다."),
     USER_DELETE_OK(HttpStatus.OK, "AUTH2002", "회원 탈퇴가 완료되었습니다."),
     USER_REFRESH_OK(HttpStatus.OK, "AUTH2003", "토큰 재발급이 완료되었습니다."),
     MYPAGE_OK(HttpStatus.OK, "AUTH2004", "마이페이지 조회가 완료되었습니다."),
+
     ;
 
     private final HttpStatus httpStatus;

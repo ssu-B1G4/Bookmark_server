@@ -33,22 +33,6 @@ public class Member extends BaseEntity {
     @OneToMany(mappedBy = "member", cascade = CascadeType.ALL)
     private List<Review> reviews = new ArrayList<>();
 
-    // 리뷰 추가
-    public void addReview(Review review) {
-        reviews.add(review);
-        review.setMember(this);
-    }
-
-    // 리뷰 제거
-    public void removeReview(Review review) {
-        reviews.remove(review);
-        review.setMember(null);
-    }
-
-    public void updateMood(Mood mood) {
-        this.mood = mood;
-    }
-
     @Builder
     public Member(String nickname, Mood mood, String email) {
         this.nickname = nickname;

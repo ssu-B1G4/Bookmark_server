@@ -153,4 +153,12 @@ public class PlaceController {
         return BaseResponse.of(SuccessStatus.BOOKMARK_PLACE_LIST_OK, response);
     }
 
+    @Operation(summary = "추천 공간 목록 조회", description = "사용자의 선호 분위기와 일치하는 공간 목록을 조회합니다.")
+    @GetMapping("/places/recommend")
+    public BaseResponse<PlaceResponseDTO.PlacePreviewListDTO> getRecommendedPlaces(
+            @AuthUser @Parameter(hidden = true) Member member,
+            @RequestParam(defaultValue = "1") int page) {
+        PlaceResponseDTO.PlacePreviewListDTO recommendedPlaces = placeService.getRecommendedPlaces(member, page);
+        return BaseResponse.of(SuccessStatus.PLACE_RECOMMEND_OK, recommendedPlaces);
+    }
 }
