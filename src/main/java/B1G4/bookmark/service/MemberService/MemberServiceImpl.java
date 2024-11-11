@@ -69,7 +69,7 @@ public class MemberServiceImpl implements MemberService{
                 member.updateToken(accessToken, refreshToken);
                 memberRepository.save(member);
                 //    refreshTokenService.saveToken(refreshToken);  redis관련
-                return AuthConverter.toOAuthResponse(accessToken, refreshToken, true, member);
+                return AuthConverter.toOAuthResponse(accessToken, refreshToken, member);
             }
         } else {
             Member member = memberRepository.save(AuthConverter.toMember(kakaoProfile, makeNickname()));
@@ -78,7 +78,7 @@ public class MemberServiceImpl implements MemberService{
             member.updateToken(accessToken, refreshToken);
             memberRepository.save(member);
         //    refreshTokenService.saveToken(refreshToken);
-            return AuthConverter.toOAuthResponse(accessToken, refreshToken, false, member);
+            return AuthConverter.toOAuthResponse(accessToken, refreshToken, member);
         }
     }
 
