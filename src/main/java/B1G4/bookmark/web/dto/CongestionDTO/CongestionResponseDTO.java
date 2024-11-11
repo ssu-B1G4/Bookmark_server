@@ -1,17 +1,23 @@
 package B1G4.bookmark.web.dto.CongestionDTO;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
+import lombok.Setter;
 
-import java.util.Map;
+import java.util.List;
 
 @Getter
-@Builder
+@Setter
 @AllArgsConstructor
 public class CongestionResponseDTO {
 
-    private Long placeId;
-    private Map<String, Integer> congestionData;
+    private List<HourValueDTO> congestionData;
 
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    public static class HourValueDTO {
+        private String hour;
+        private Integer value;
+    }
 }

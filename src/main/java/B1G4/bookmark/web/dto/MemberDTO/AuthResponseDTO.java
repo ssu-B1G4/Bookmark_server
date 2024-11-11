@@ -11,7 +11,6 @@ public class AuthResponseDTO {
         Long memberId;
         String accessToken;
         String refreshToken;
-        Boolean isLogin;
     }
 
     @Getter
