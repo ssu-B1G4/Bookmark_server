@@ -1,6 +1,7 @@
 package B1G4.bookmark.service.MemberService;
 
 import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
+import B1G4.bookmark.apiPayload.code.status.SuccessStatus;
 import B1G4.bookmark.apiPayload.exception.AuthException;
 import B1G4.bookmark.apiPayload.exception.UserException;
 import B1G4.bookmark.converter.AuthConverter;
@@ -48,14 +49,14 @@ public class MemberServiceImpl implements MemberService{
     @Override
     @Transactional
     public AuthResponseDTO.OAuthResponse kakaoLogin(String code) {
-        OAuthToken oAuthToken = null;
+        OAuthToken oAuthToken;
         try {
             oAuthToken = kakaoAuthProvider.requestToken(code);
         } catch (Exception e){
             throw new UserException(ErrorStatus.AUTH_INVALID_CODE);
         }
 
-        KakaoProfile kakaoProfile = null;
+        KakaoProfile kakaoProfile;
         try {
             kakaoProfile =
                     kakaoAuthProvider.requestKakaoProfile(oAuthToken.getAccess_token());
@@ -93,15 +94,15 @@ public class MemberServiceImpl implements MemberService{
         }
     }
 
+    @Transactional
     @Override
-    public String deleteMember(Member member) {
+    public void deleteMember(Member member) {
         try {
             member.updateIsDelete(1);
             memberRepository.save(member);
         } catch (Exception e) {
-            throw new RuntimeException("삭제 실패");
+            throw new UserException(ErrorStatus.USER_DELETE_FAILED);
         }
-        return "회원탈퇴 성공";
     }
 
     @Override
@@ -110,7 +111,7 @@ public class MemberServiceImpl implements MemberService{
         jwtTokenProvider.isTokenValid(refreshToken);
         Long id = jwtTokenProvider.getId(refreshToken);
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(ErrorStatus.USER_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new UserException(ErrorStatus.USER_NOT_FOUND));
         String newAccessToken =
                 jwtTokenProvider.createAccessToken(id);
         String newRefreshToken =

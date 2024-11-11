@@ -12,7 +12,7 @@ public interface MemberService {
 
     AuthResponseDTO.OAuthResponse kakaoLogin(String code);
 
-    String deleteMember(Member member);
+    void deleteMember(Member member);
 
     MemberResponseDTO.MyPageResponse getMyPageInfo(Member member);
 

@@ -37,6 +37,7 @@ public enum ErrorStatus implements BaseErrorCode {
     // User 관련
     USER_NOT_FOUND(HttpStatus.NOT_FOUND, "USER_001", "존재하지 않는 사용자입니다."),
     USER_EXISTS(HttpStatus.BAD_REQUEST, "USER_002", "이미 존재하는 아이디입니다."),
+    USER_DELETE_FAILED(HttpStatus.NOT_FOUND, "USER_003", "회원 탈퇴에 실패했습니다."),
 
     //Search 관련
     SEARCH_CONDITION_INVALID(HttpStatus.BAD_REQUEST, "SEARCH_001", "검색 조건이 하나라도 존재해야 합니다."),
