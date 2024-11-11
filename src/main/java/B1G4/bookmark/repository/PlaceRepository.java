@@ -1,8 +1,10 @@
 package B1G4.bookmark.repository;
 
 import B1G4.bookmark.domain.Place;
+import B1G4.bookmark.domain.enums.Mood;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -37,4 +39,6 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
             "(LOWER(p.name) LIKE LOWER(CONCAT('%', :search, '%')))" +
             "OR (LOWER(p.address) LIKE LOWER(CONCAT('%', :search, '%')))")
     Page<Place> findByNameContainingOrAddressContaining(@Param("search") String search, PageRequest pageRequest);
+
+    Page<Place> findByMood1OrMood2(Mood mood1, Mood mood2, Pageable pageable);
 }
