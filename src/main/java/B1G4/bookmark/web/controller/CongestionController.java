@@ -4,6 +4,7 @@ import B1G4.bookmark.apiPayload.BaseResponse;
 import B1G4.bookmark.apiPayload.code.status.SuccessStatus;
 import B1G4.bookmark.service.CongestionService.CongestionServiceImpl;
 import B1G4.bookmark.web.dto.CongestionDTO.CongestionResponseDTO;
+import B1G4.bookmark.web.dto.CongestionDTO.CongestionStatusDTO;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import lombok.RequiredArgsConstructor;
@@ -28,6 +29,16 @@ public class CongestionController {
             @PathVariable Long placeId) {
 
         CongestionResponseDTO congestionData = congestionServiceImpl.getCongestionGraph(placeId);
-        return BaseResponse.of(SuccessStatus.CONGESTION_FETCH_OK, congestionData);
+        return BaseResponse.of(SuccessStatus.CONGESTION_GRAPH_OK, congestionData);
+    }
+
+    @Operation(summary = "현재 혼잡도 상태 조회", description = "현재 시간에 따라 혼잡도를 여유, 보통, 혼잡으로 구분하여 반환합니다.")
+    @GetMapping("/congestions/{placeId}")
+    public BaseResponse<CongestionStatusDTO> getCurrentCongestionStatus(
+            @Parameter(description = "공간 ID", required = true)
+            @PathVariable Long placeId) {
+
+        CongestionStatusDTO congestionStatus = congestionServiceImpl.getCurrentCongestionStatus(placeId);
+        return BaseResponse.of(SuccessStatus.CONGESTION_STATUS_OK, congestionStatus);
     }
 }

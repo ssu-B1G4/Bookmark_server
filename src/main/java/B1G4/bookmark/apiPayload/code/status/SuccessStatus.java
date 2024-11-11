@@ -30,6 +30,9 @@ public enum SuccessStatus implements BaseCode {
     // 제보 장소
     REPORT_PLACE_CREATE_OK(HttpStatus.OK, "REPORTPLACE201", "공간 제보 성공"),
     // 혼잡도
+
+    CONGESTION_GRAPH_OK(HttpStatus.OK, "CONGESTION200", "혼잡도 그래프 조회 성공"),
+    CONGESTION_STATUS_OK(HttpStatus.OK, "CONGESTION201", "현재 혼잡도 상태 값 조회 성공"),
     CONGESTION_FETCH_OK(HttpStatus.OK, "CONGESTION200", "혼잡도 조회 성공"),
 
     BOOKMARK_PLACE_LIST_OK(HttpStatus.OK, "PLACE2008","공간 저장 리스트 조회가 완료되었습니다."),
@@ -40,7 +43,6 @@ public enum SuccessStatus implements BaseCode {
     USER_DELETE_OK(HttpStatus.OK, "AUTH2002", "회원 탈퇴가 완료되었습니다."),
     USER_REFRESH_OK(HttpStatus.OK, "AUTH2003", "토큰 재발급이 완료되었습니다."),
     MYPAGE_OK(HttpStatus.OK, "AUTH2004", "마이페이지 조회가 완료되었습니다."),
-
     ;
 
     private final HttpStatus httpStatus;

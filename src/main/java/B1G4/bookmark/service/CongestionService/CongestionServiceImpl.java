@@ -9,6 +9,7 @@ import B1G4.bookmark.repository.CongestionRepository;
 import B1G4.bookmark.repository.OperatingTimeRepository;
 import B1G4.bookmark.repository.PlaceRepository;
 import B1G4.bookmark.web.dto.CongestionDTO.CongestionResponseDTO;
+import B1G4.bookmark.web.dto.CongestionDTO.CongestionStatusDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -49,5 +50,30 @@ public class CongestionServiceImpl implements CongestionService {
         List<CongestionResponseDTO.HourValueDTO> congestionData = CongestionConverter.filterAndRoundCongestion(congestion, openTime, closeTime);
 
         return new CongestionResponseDTO(congestionData);
+    }
+
+    public CongestionStatusDTO getCurrentCongestionStatus(Long placeId) {
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new IllegalArgumentException("해당 공간을 찾을 수 없습니다."));
+
+        Congestion congestion = place.getCongestion();
+        if (congestion == null) {
+            throw new IllegalArgumentException("해당 공간의 혼잡도 데이터가 존재하지 않습니다.");
+        }
+
+        LocalTime currentTime = LocalTime.now();
+        int currentHour = currentTime.getHour();
+        Float congestionLevel = CongestionConverter.getCongestionLevel(congestion, currentHour);
+
+        String status;
+        if (congestionLevel < 30) {
+            status = "여유";
+        } else if (congestionLevel <= 70) {
+            status = "보통";
+        } else {
+            status = "혼잡";
+        }
+
+        return new CongestionStatusDTO(placeId, currentHour + ":00", status);
     }
 }
