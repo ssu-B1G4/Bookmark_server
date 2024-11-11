@@ -1,8 +1,10 @@
 package B1G4.bookmark.converter;
 
 import B1G4.bookmark.domain.Congestion;
+import B1G4.bookmark.web.dto.CongestionDTO.CongestionResponseDTO;
 
 import java.time.LocalTime;
+import java.util.*;
 
 public class CongestionConverter {
     public static Congestion updateCongestion(Congestion congestion, LocalTime startTime, LocalTime endTime, float congestionLevel, int totalReviewCount) {
@@ -93,5 +95,17 @@ public class CongestionConverter {
             case 23 -> builder.twentyThree(value);
             default -> builder;
         };
+    }
+
+    public static List<CongestionResponseDTO.HourValueDTO> filterAndRoundCongestion(Congestion congestion, LocalTime openTime, LocalTime closeTime) {
+        List<CongestionResponseDTO.HourValueDTO> congestionData = new ArrayList<>();
+
+        for (int hour = openTime.getHour(); hour <= closeTime.getHour(); hour++) {
+            float congestionLevel = getCongestionLevel(congestion, hour);
+            int roundedValue = Math.round(congestionLevel);
+            congestionData.add(new CongestionResponseDTO.HourValueDTO(hour + ":00", roundedValue));
+        }
+
+        return congestionData;
     }
 }
