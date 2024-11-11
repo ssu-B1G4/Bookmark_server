@@ -1,6 +1,7 @@
 package B1G4.bookmark.service.MemberService;
 
 import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
+import B1G4.bookmark.apiPayload.code.status.SuccessStatus;
 import B1G4.bookmark.apiPayload.exception.AuthException;
 import B1G4.bookmark.apiPayload.exception.UserException;
 import B1G4.bookmark.converter.AuthConverter;
@@ -48,9 +49,20 @@ public class MemberServiceImpl implements MemberService{
     @Override
     @Transactional
     public AuthResponseDTO.OAuthResponse kakaoLogin(String code) {
-        OAuthToken oAuthToken = kakaoAuthProvider.requestToken(code);
-        KakaoProfile kakaoProfile =
-                kakaoAuthProvider.requestKakaoProfile(oAuthToken.getAccess_token());
+        OAuthToken oAuthToken;
+        try {
+            oAuthToken = kakaoAuthProvider.requestToken(code);
+        } catch (Exception e){
+            throw new UserException(ErrorStatus.AUTH_INVALID_CODE);
+        }
+
+        KakaoProfile kakaoProfile;
+        try {
+            kakaoProfile =
+                    kakaoAuthProvider.requestKakaoProfile(oAuthToken.getAccess_token());
+        }catch (Exception e){
+            throw new UserException(ErrorStatus.INVALID_REQUEST_INFO);
+        }
 
         // 유저 정보 받기
         Optional<Member> queryMember =
@@ -69,7 +81,7 @@ public class MemberServiceImpl implements MemberService{
                 member.updateToken(accessToken, refreshToken);
                 memberRepository.save(member);
                 //    refreshTokenService.saveToken(refreshToken);  redis관련
-                return AuthConverter.toOAuthResponse(accessToken, refreshToken, true, member);
+                return AuthConverter.toOAuthResponse(accessToken, refreshToken, member);
             }
         } else {
             Member member = memberRepository.save(AuthConverter.toMember(kakaoProfile, makeNickname()));
@@ -78,19 +90,19 @@ public class MemberServiceImpl implements MemberService{
             member.updateToken(accessToken, refreshToken);
             memberRepository.save(member);
         //    refreshTokenService.saveToken(refreshToken);
-            return AuthConverter.toOAuthResponse(accessToken, refreshToken, false, member);
+            return AuthConverter.toOAuthResponse(accessToken, refreshToken, member);
         }
     }
 
+    @Transactional
     @Override
-    public String deleteMember(Member member) {
+    public void deleteMember(Member member) {
         try {
             member.updateIsDelete(1);
             memberRepository.save(member);
         } catch (Exception e) {
-            throw new RuntimeException("삭제 실패");
+            throw new UserException(ErrorStatus.USER_DELETE_FAILED);
         }
-        return "회원탈퇴 성공";
     }
 
     @Override
@@ -99,7 +111,7 @@ public class MemberServiceImpl implements MemberService{
         jwtTokenProvider.isTokenValid(refreshToken);
         Long id = jwtTokenProvider.getId(refreshToken);
         Member member = memberRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException(ErrorStatus.USER_NOT_FOUND.getMessage()));
+                .orElseThrow(() -> new UserException(ErrorStatus.USER_NOT_FOUND));
         String newAccessToken =
                 jwtTokenProvider.createAccessToken(id);
         String newRefreshToken =
