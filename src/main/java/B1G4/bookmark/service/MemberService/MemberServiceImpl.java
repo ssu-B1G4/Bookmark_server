@@ -48,9 +48,20 @@ public class MemberServiceImpl implements MemberService{
     @Override
     @Transactional
     public AuthResponseDTO.OAuthResponse kakaoLogin(String code) {
-        OAuthToken oAuthToken = kakaoAuthProvider.requestToken(code);
-        KakaoProfile kakaoProfile =
-                kakaoAuthProvider.requestKakaoProfile(oAuthToken.getAccess_token());
+        OAuthToken oAuthToken = null;
+        try {
+            oAuthToken = kakaoAuthProvider.requestToken(code);
+        } catch (Exception e){
+            throw new UserException(ErrorStatus.AUTH_INVALID_CODE);
+        }
+
+        KakaoProfile kakaoProfile = null;
+        try {
+            kakaoProfile =
+                    kakaoAuthProvider.requestKakaoProfile(oAuthToken.getAccess_token());
+        }catch (Exception e){
+            throw new UserException(ErrorStatus.INVALID_REQUEST_INFO);
+        }
 
         // 유저 정보 받기
         Optional<Member> queryMember =
