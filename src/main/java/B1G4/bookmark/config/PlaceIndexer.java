@@ -16,16 +16,16 @@ public class PlaceIndexer {
     private final PlaceRepository placeRepository;
     private final PlaceSearchRepository placeSearchRepository;
 
-    @PostConstruct
-    public void indexPlaces() {
-        log.info("Elasticsearch 데이터 indexing 시작");
-        try {
-            placeRepository.findAll().forEach(place -> {
-                placeSearchRepository.save(PlaceDocument.from(place));
-            });
-            log.info("Elasticsearch 데이터 indexing 완료");
-        } catch (Exception e) {
-            log.error("Elasticsearch indexing 실패: {}", e.getMessage(), e);
-        }
-    }
+//    @PostConstruct
+//    public void indexPlaces() {
+//        log.info("Elasticsearch 데이터 indexing 시작");
+//        try {
+//            placeRepository.findAll().forEach(place -> {
+//                placeSearchRepository.save(PlaceDocument.from(place));
+//            });
+//            log.info("Elasticsearch 데이터 indexing 완료");
+//        } catch (Exception e) {
+//            log.error("Elasticsearch indexing 실패: {}", e.getMessage(), e);
+//        }
+//    }
 }
