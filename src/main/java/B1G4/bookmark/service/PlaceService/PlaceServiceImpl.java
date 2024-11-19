@@ -3,16 +3,13 @@ package B1G4.bookmark.service.PlaceService;
 import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
 import B1G4.bookmark.apiPayload.exception.UserException;
 import B1G4.bookmark.apiPayload.exception.handler.PlaceHandler;
+import B1G4.bookmark.converter.CongestionConverter;
+import B1G4.bookmark.converter.OperatingTimeConverter;
 import B1G4.bookmark.converter.PlaceConverter;
-import B1G4.bookmark.domain.Member;
-import B1G4.bookmark.domain.Place;
-import B1G4.bookmark.domain.OperatingTime;
-import B1G4.bookmark.domain.UserPlace;
+import B1G4.bookmark.document.PlaceDocument;
+import B1G4.bookmark.domain.*;
 import B1G4.bookmark.domain.enums.*;
-import B1G4.bookmark.repository.OperatingTimeRepository;
-import B1G4.bookmark.repository.PlaceImgRepository;
-import B1G4.bookmark.repository.PlaceRepository;
-import B1G4.bookmark.repository.UserPlaceRepository;
+import B1G4.bookmark.repository.*;
 import B1G4.bookmark.service.MemberService.MemberServiceImpl;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceRequestDTO;
 import B1G4.bookmark.web.dto.PlaceDTO.PlaceResponseDTO;
@@ -22,9 +19,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.elasticsearch.client.elc.NativeQuery;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.data.elasticsearch.core.SearchHits;
+import org.springframework.data.elasticsearch.core.query.Query;
+import org.springframework.data.elasticsearch.core.ElasticsearchOperations;
 
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
@@ -48,6 +50,9 @@ public class PlaceServiceImpl implements PlaceService{
     private final PlaceImgRepository placeImgRepository;
     private final OperatingTimeRepository operatingTimeRepository;
     private final UserPlaceRepository userPlaceRepository;
+    private final ElasticsearchOperations elasticsearchOperations;
+    private final PlaceSearchRepository placeSearchRepository;
+    private final CongestionRepository congestionRepository;
     private static final Double EARTH_RADIUS = 6371.0;
 
     @Override
@@ -92,6 +97,7 @@ public class PlaceServiceImpl implements PlaceService{
         }
     }
     @Override
+    @Transactional
     public Place createPlace(PlaceRequestDTO.PlaceCreateDTO request, Double longitude, Double latitude) {
         Place place = PlaceConverter.toPlace(request, longitude, latitude);
         for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
@@ -101,6 +107,8 @@ public class PlaceServiceImpl implements PlaceService{
         Congestion congestion = CongestionConverter.toCongestion(place);
         place.setCongestion(congestion);
         placeRepository.save(place);
+        placeSearchRepository.save(PlaceDocument.from(place));
+        congestionRepository.save(congestion);
         return place;
     }
 
@@ -144,8 +152,59 @@ public class PlaceServiceImpl implements PlaceService{
     @Override
     public Page<Place> searchPlaces(String search, Integer page) {
         PageRequest pageRequest = PageRequest.of(page-1, 10);
+            /* 기존 Jpa 검색
         Page<Place> searchPlaces = placeRepository.findByNameContainingOrAddressContaining(search, pageRequest);
         return searchPlaces;
+            기존 Jpa 검색 */
+
+        /*elastic search 검색*/
+        /*자동완성 + 한영오타보정 + 초성 검색*/
+        // 검색어가 비어있는 경우 처리
+        if (search == null || search.trim().isEmpty()) {
+            return Page.empty(pageRequest);
+        }
+
+        try {
+            // 검색 쿼리 생성
+            Query searchQuery = NativeQuery.builder()
+                    .withQuery(q -> q
+                            .bool(b -> b
+                                    .should(s -> s
+                                            .match(m -> m
+                                                    .field("name")
+                                                    .query(search)
+                                            )
+                                    )
+                                    .should(s -> s
+                                            .match(m -> m
+                                                    .field("address")
+                                                    .query(search)
+                                            )
+                                    )
+                            )
+                    )
+                    .withPageable(pageRequest)
+                    .build();
+
+            // Elasticsearch 검색 실행
+            SearchHits<PlaceDocument> searchHits = elasticsearchOperations.search(
+                    searchQuery,
+                    PlaceDocument.class
+            );
+
+            // 검색 결과를 Place 엔티티로 변환
+            List<Place> placeList = searchHits.stream()
+                    .map(hit -> placeRepository.findById(hit.getContent().getId())
+                            .orElseThrow(() -> new EntityNotFoundException("Place not found with id: " + hit.getContent().getId())))
+                    .collect(Collectors.toList());
+
+            // Page 객체 생성 및 반환
+            return new PageImpl<>(placeList, pageRequest, searchHits.getTotalHits());
+
+        } catch (Exception e) {
+            // 에러 발생 시 JPA로 폴백
+            return placeRepository.findByNameContainingOrAddressContaining(search, pageRequest);
+        }
     }
 
     //필터 적용
