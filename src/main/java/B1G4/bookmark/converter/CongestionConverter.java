@@ -39,33 +39,34 @@ public class CongestionConverter {
 
     public static float getCongestionLevel(Congestion congestion, int hour) {
         return switch (hour) {
-            case 0 -> congestion.getZero();
-            case 1 -> congestion.getOne();
-            case 2 -> congestion.getTwo();
-            case 3 -> congestion.getThree();
-            case 4 -> congestion.getFour();
-            case 5 -> congestion.getFive();
-            case 6 -> congestion.getSix();
-            case 7 -> congestion.getSeven();
-            case 8 -> congestion.getEight();
-            case 9 -> congestion.getNine();
-            case 10 -> congestion.getTen();
-            case 11 -> congestion.getEleven();
-            case 12 -> congestion.getTwelve();
-            case 13 -> congestion.getThirteen();
-            case 14 -> congestion.getFourteen();
-            case 15 -> congestion.getFifteen();
-            case 16 -> congestion.getSixteen();
-            case 17 -> congestion.getSeventeen();
-            case 18 -> congestion.getEighteen();
-            case 19 -> congestion.getNineteen();
-            case 20 -> congestion.getTwenty();
-            case 21 -> congestion.getTwentyOne();
-            case 22 -> congestion.getTwentyTwo();
-            case 23 -> congestion.getTwentyThree();
+            case 0 -> Optional.ofNullable(congestion.getZero()).orElse(0f);
+            case 1 -> Optional.ofNullable(congestion.getOne()).orElse(0f);
+            case 2 -> Optional.ofNullable(congestion.getTwo()).orElse(0f);
+            case 3 -> Optional.ofNullable(congestion.getThree()).orElse(0f);
+            case 4 -> Optional.ofNullable(congestion.getFour()).orElse(0f);
+            case 5 -> Optional.ofNullable(congestion.getFive()).orElse(0f);
+            case 6 -> Optional.ofNullable(congestion.getSix()).orElse(0f);
+            case 7 -> Optional.ofNullable(congestion.getSeven()).orElse(0f);
+            case 8 -> Optional.ofNullable(congestion.getEight()).orElse(0f);
+            case 9 -> Optional.ofNullable(congestion.getNine()).orElse(0f);
+            case 10 -> Optional.ofNullable(congestion.getTen()).orElse(0f);
+            case 11 -> Optional.ofNullable(congestion.getEleven()).orElse(0f);
+            case 12 -> Optional.ofNullable(congestion.getTwelve()).orElse(0f);
+            case 13 -> Optional.ofNullable(congestion.getThirteen()).orElse(0f);
+            case 14 -> Optional.ofNullable(congestion.getFourteen()).orElse(0f);
+            case 15 -> Optional.ofNullable(congestion.getFifteen()).orElse(0f);
+            case 16 -> Optional.ofNullable(congestion.getSixteen()).orElse(0f);
+            case 17 -> Optional.ofNullable(congestion.getSeventeen()).orElse(0f);
+            case 18 -> Optional.ofNullable(congestion.getEighteen()).orElse(0f);
+            case 19 -> Optional.ofNullable(congestion.getNineteen()).orElse(0f);
+            case 20 -> Optional.ofNullable(congestion.getTwenty()).orElse(0f);
+            case 21 -> Optional.ofNullable(congestion.getTwentyOne()).orElse(0f);
+            case 22 -> Optional.ofNullable(congestion.getTwentyTwo()).orElse(0f);
+            case 23 -> Optional.ofNullable(congestion.getTwentyThree()).orElse(0f);
             default -> 0f;
         };
     }
+
 
     private static Congestion.CongestionBuilder setCongestionLevel(Congestion.CongestionBuilder builder, int hour, float value) {
         return switch (hour) {

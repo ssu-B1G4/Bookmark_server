@@ -1,5 +1,6 @@
 package B1G4.bookmark.web.dto.ReviewDTO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.*;
 import org.springframework.data.domain.Page;
 
@@ -24,6 +25,7 @@ public class ReviewResponseDTO {
     public static class ReviewPreviewDTO {
         private Long reviewId;
         private String nickname;         // 닉네임
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
         private LocalDateTime visitDate; // 방문 날짜
         private String content;          // 리뷰 내용
         private List<String> reviewImgs; // 리뷰 이미지 URL 리스트
@@ -60,7 +62,9 @@ public class ReviewResponseDTO {
     public static class ReviewDetailDTO {
         private Long reviewId;
         private String nickname;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
         private LocalDateTime visitDate;
+        @JsonFormat(pattern = "yyyy-MM-dd HH:mm")
         private LocalDateTime writtenDate;
         private String content;
         private String outlet;
