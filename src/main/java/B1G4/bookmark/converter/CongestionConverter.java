@@ -1,6 +1,7 @@
 package B1G4.bookmark.converter;
 
 import B1G4.bookmark.domain.Congestion;
+import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.web.dto.CongestionDTO.CongestionResponseDTO;
 
 import java.time.LocalTime;
@@ -107,5 +108,36 @@ public class CongestionConverter {
         }
 
         return congestionData;
+    }
+
+    public static Congestion toCongestion(Place place) {
+        return Congestion.builder()
+                .place(place)
+                .zero(0f)
+                .one(0f)
+                .two(0f)
+                .three(0f)
+                .four(0f)
+                .five(0f)
+                .six(0f)
+                .seven(0f)
+                .eight(0f)
+                .nine(0f)
+                .ten(0f)
+                .eleven(0f)
+                .twelve(0f)
+                .thirteen(0f)
+                .fourteen(0f)
+                .fifteen(0f)
+                .sixteen(0f)
+                .seventeen(0f)
+                .eighteen(0f)
+                .nineteen(0f)
+                .twenty(0f)
+                .twentyOne(0f)
+                .twentyTwo(0f)
+                .twentyThree(0f)
+                .twentyFour(0f)
+                .build();
     }
 }

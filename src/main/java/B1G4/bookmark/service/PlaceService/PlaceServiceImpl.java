@@ -94,6 +94,12 @@ public class PlaceServiceImpl implements PlaceService{
     @Override
     public Place createPlace(PlaceRequestDTO.PlaceCreateDTO request, Double longitude, Double latitude) {
         Place place = PlaceConverter.toPlace(request, longitude, latitude);
+        for (DayOfWeek dayOfWeek : DayOfWeek.values()) {
+            OperatingTime operatingTime = OperatingTimeConverter.toOperatingTime(place, dayOfWeek);
+            operatingTimeRepository.save(operatingTime);
+        }
+        Congestion congestion = CongestionConverter.toCongestion(place);
+        place.setCongestion(congestion);
         placeRepository.save(place);
         return place;
     }
