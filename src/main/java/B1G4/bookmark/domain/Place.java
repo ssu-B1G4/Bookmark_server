@@ -97,4 +97,8 @@ public class Place extends BaseEntity {
         this.mood1 = topMoods.size() > 0 ? topMoods.get(0).getKey() : null;
         this.mood2 = topMoods.size() > 1 ? topMoods.get(1).getKey() : null;
     }
+
+    public void setCongestion(Congestion congestion) {
+        this.congestion = congestion;
+    }
 }
