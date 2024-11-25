@@ -48,3 +48,9 @@ cloud:
     credentials:
       accessKey: ${BUCKET_ACCESS}
       secretKey: ${BUCKET_SECRET}
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info, prometheus

@@ -30,7 +30,8 @@ public class SecurityConfig {
             "/swagger-resources/**",
             "/v3/api-docs/**",
             "/login",
-            "/refresh"
+            "/refresh",
+            "/actuator/prometheus"
     };
 
     @Bean
