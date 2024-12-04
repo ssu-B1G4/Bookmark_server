@@ -1,5 +1,6 @@
 package B1G4.bookmark.security.handler.resolver;
 
+import B1G4.bookmark.apiPayload.exception.AuthException;
 import B1G4.bookmark.service.MemberService.MemberService;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -34,7 +35,7 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
             ModelAndViewContainer mavContainer,
             NativeWebRequest webRequest,
             WebDataBinderFactory binderFactory)
-            throws Exception {
+            throws AuthException {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 
         Object principal = null;
@@ -46,7 +47,7 @@ public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
             principal = authentication.getPrincipal();
         }
         if (principal == null || principal.getClass() == String.class) {
-            throw new GeneralException(ErrorStatus.USER_NOT_FOUND);
+            throw new AuthException(ErrorStatus.USER_NOT_FOUND);
         }
 
         UsernamePasswordAuthenticationToken authenticationToken =

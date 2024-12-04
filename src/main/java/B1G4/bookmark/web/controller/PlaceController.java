@@ -161,4 +161,13 @@ public class PlaceController {
         PlaceResponseDTO.PlacePreviewListDTO recommendedPlaces = placeService.getRecommendedPlaces(member, page);
         return BaseResponse.of(SuccessStatus.PLACE_RECOMMEND_OK, recommendedPlaces);
     }
+
+    @Operation(summary = "저장 공간 여부 결과 조회", description = "사용자의 저장 공간 여부 결과를 조회합니다.")
+    @GetMapping("/places/{placeId}/bookmarks")
+    public BaseResponse<PlaceResponseDTO.BookMarkByPlaceDTO> getBookmarkPlaceList(
+            @Parameter(name = "user", hidden = true) @AuthUser Member member,
+            @PathVariable Long placeId) {
+        PlaceResponseDTO.BookMarkByPlaceDTO response = placeService.getBookmarkByPlaceId(member, placeId);
+        return BaseResponse.of(SuccessStatus.BOOKMARK_OK, response);
+    }
 }

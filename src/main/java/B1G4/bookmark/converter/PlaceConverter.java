@@ -137,4 +137,11 @@ public class PlaceConverter {
                 .moodFrequency(place.getMoodFrequency())
                 .build();
     }
+
+    public static PlaceResponseDTO.BookMarkByPlaceDTO toBookmarkByPlaceDTO(Place place, Boolean isSaved) {
+        return PlaceResponseDTO.BookMarkByPlaceDTO.builder()
+                .placeId(place.getId())
+                .isSaved(isSaved)
+                .build();
+    }
 }

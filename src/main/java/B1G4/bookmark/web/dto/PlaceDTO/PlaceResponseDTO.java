@@ -92,4 +92,13 @@ public class PlaceResponseDTO {
         String address;
         String img;
     }
+
+    @Getter
+    @Builder
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class BookMarkByPlaceDTO {
+        Long placeId;
+        Boolean isSaved;
+    }
 }

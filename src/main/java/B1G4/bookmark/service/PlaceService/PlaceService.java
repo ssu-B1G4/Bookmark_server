@@ -22,4 +22,5 @@ public interface PlaceService {
     void bookmarkPlace(Member member, Long placeId);
     void unbookmarkPlace(Member member, Long placeId);
     PlaceResponseDTO.BookmarkPlaceListDTO getBookmarkPlaceList(Member member, int page);
+    PlaceResponseDTO.BookMarkByPlaceDTO getBookmarkByPlaceId(Member member, Long placeId);
 }
