@@ -97,7 +97,7 @@ jobs:
     - name: Set environment variables
       uses: microsoft/variable-substitution@v1
       with:
-        files: src/main/resources/application.yml
+        files: ./src/main/resources/application.yml
       env:
         DB_URL: ${{ secrets.DB_URL }}
         DB_USER: ${{ secrets.DB_USER }}
