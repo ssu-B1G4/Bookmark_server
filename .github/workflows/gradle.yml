@@ -97,22 +97,25 @@ jobs:
     - name: Set environment variables
       uses: microsoft/variable-substitution@v1
       with:
-        files: ${{ env.RESOURCE_PATH }}
+        files: src/main/resources/application.yml
       env:
-        spring.datasource.url: ${{ secrets.DB_URL }}
-        spring.datasource.username: ${{ secrets.DB_USER }}
-        spring.datasource.password: ${{ secrets.DB_PASSWORD }}
-        jwt.key: ${{ secrets.JWT_SECRET_KEY }}
-        jwt.access-token-validity: ${{ secrets.JWT_ACCESS_TOKEN_TIME }}
-        jwt.refresh-token-validity: ${{ secrets.JWT_REFRESH_TOKEN_TIME }}
-        naver.map.client.id: ${{ secrets.NAVER_CLIENT_ID }}
-        naver.map.client.secret: ${{ secrets.NAVER_CLIENT_SECRET }}
-        naver.map.url: ${{ secrets.NAVER_MAP_URL }}
-        bucket.access: ${{ secrets.BUCKET_ACCESS }}
-        bucket.name: ${{ secrets.BUCKET_NAME }}
-        bucket.secret: ${{ secrets.BUCKET_SECRET }}
-        bucket.region: ${{ secrets.BUCKET_REGION }}
-        elasticsearch.uris: ${{ secrets.ELASTICSEARCH_URIS }}
+        DB_URL: ${{ secrets.DB_URL }}
+        DB_USER: ${{ secrets.DB_USER }}
+        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        ELASTICSEARCH_URIS: ${{ secrets.ELASTICSEARCH_URIS }}
+        NAVER_MAP_URL: ${{ secrets.NAVER_MAP_URL }}
+        NAVER_CLIENT_ID: ${{ secrets.NAVER_CLIENT_ID }}
+        NAVER_CLIENT_SECRET: ${{ secrets.NAVER_CLIENT_SECRET }}
+        JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+        JWT_ACCESS_TOKEN_TIME: ${{ secrets.JWT_ACCESS_TOKEN_TIME }}
+        JWT_REFRESH_TOKEN_TIME: ${{ secrets.JWT_REFRESH_TOKEN_TIME }}
+        CLIENT_ID: ${{ secrets.CLIENT_ID }}
+        REDIRECT_URI: ${{ secrets.REDIRECT_URI }}
+        BUCKET_NAME: ${{ secrets.BUCKET_NAME }}
+        BUCKET_ACCESS: ${{ secrets.BUCKET_ACCESS }}
+        BUCKET_SECRET: ${{ secrets.BUCKET_SECRET }}
+        BUCKET_REGION: ${{ secrets.BUCKET_REGION }}
+
 
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
