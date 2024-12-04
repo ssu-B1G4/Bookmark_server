@@ -17,14 +17,12 @@ else
   echo "No running application found."
 fi
 
-# 새로운 애플리케이션 실행
 echo "Starting new application: $JAR_FILE"
-nohup java -jar $JAR_FILE & > /dev/null
+nohup java -jar $JAR_FILE > $LOG_FILE 2>&1 &
 if [ $? -eq 0 ]; then
   echo "Application started successfully."
+  echo "Logs can be found in: $LOG_FILE"
 else
   echo "Failed to start application." >&2
   exit 1
 fi
-
-echo "Logs can be found in: $LOG_FILE"
