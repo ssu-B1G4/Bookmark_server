@@ -19,7 +19,7 @@ fi
 
 # 새로운 애플리케이션 실행
 echo "Starting new application: $JAR_FILE"
-nohup java -jar $JAR_FILE > $LOG_FILE 2>&1 &
+nohup java -jar $JAR_FILE & > /dev/null
 if [ $? -eq 0 ]; then
   echo "Application started successfully."
 else
