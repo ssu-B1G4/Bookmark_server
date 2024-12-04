@@ -18,7 +18,7 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
        sin(radians(:latitude)) * 
        sin(radians(p.latitude))
    )) as distance 
-   FROM Place p
+   FROM place p
    WHERE p.latitude BETWEEN :minLat AND :maxLat 
    AND p.longitude BETWEEN :minLng AND :maxLng
    HAVING distance <= :radius
