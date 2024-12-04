@@ -1,9 +1,5 @@
 #!/bin/bash
 
-set -a
-source /home/ubuntu/.env
-set +a
-
 APP_DIR="/home/ubuntu/cicd"
 LOG_FILE="$APP_DIR/nohup.out"
 
