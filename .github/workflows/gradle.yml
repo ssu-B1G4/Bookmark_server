@@ -47,6 +47,40 @@ jobs:
           whoami
           ls -al
 
+    - name: Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: cicdsample
+        path: build/libs/bookmark-0.0.1-SNAPSHOT.jar
+
+    - name: Copy jar file to remote
+      uses: appleboy/scp-action@master
+      with:
+        username: ubuntu
+        host: ${{ secrets.HOST }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        source: "./build/libs/bookmark-0.0.1-SNAPSHOT.jar"
+        target: "/home/ubuntu/cicd"
+        strip_components: 2
+    - name: Copy deploy script file to remote
+      uses: appleboy/scp-action@master
+      with:
+        username: ubuntu
+        host: ${{ secrets.HOST }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        source: "deploy.sh"
+        target: "/home/ubuntu/cicd"
+    - name: Execute deploy script
+      uses: appleboy/ssh-action@master
+      with:
+        username: ubuntu
+        host: ${{ secrets.HOST }}
+        key: ${{ secrets.PRIVATE_KEY }}
+        script_stop: true
+        script: |
+          chmod +x /home/ubuntu/cicd/deploy.sh
+          sh /home/ubuntu/cicd/deploy.sh
+
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
     #
