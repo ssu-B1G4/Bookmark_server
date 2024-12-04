@@ -339,4 +339,14 @@ public class PlaceServiceImpl implements PlaceService{
         // `PlaceConverter`를 사용하여 `PlacePreviewListDTO`로 변환
         return PlaceConverter.toPlacePreviewList(places, member, memberService, placeImgRepository);
     }
+
+    @Override
+    public PlaceResponseDTO.BookMarkByPlaceDTO getBookmarkByPlaceId(Member member, Long placeId){
+        Place place = placeRepository.findById(placeId)
+                .orElseThrow(() -> new PlaceHandler(ErrorStatus.PLACE_NOT_FOUND));
+        if(userPlaceRepository.findByMemberAndPlace(member, place).isPresent()){
+            return PlaceConverter.toBookmarkByPlaceDTO(place, true);
+        }else
+            return PlaceConverter.toBookmarkByPlaceDTO(place, false);
+    }
 }
