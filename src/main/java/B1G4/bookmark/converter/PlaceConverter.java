@@ -3,6 +3,7 @@ package B1G4.bookmark.converter;
 import B1G4.bookmark.domain.Congestion;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.Place;
+import B1G4.bookmark.domain.PlaceImg;
 import B1G4.bookmark.domain.UserPlace;
 import B1G4.bookmark.repository.PlaceImgRepository;
 import B1G4.bookmark.repository.UserPlaceRepository;
@@ -96,14 +97,20 @@ public class PlaceConverter {
 
     public static PlaceResponseDTO.BookmarkPlaceListDTO toBookmarkPlaceList(Page<UserPlace> userPlaces) {
         return PlaceResponseDTO.BookmarkPlaceListDTO.builder()
-                .bookmarkPlaceList(userPlaces.getContent().stream().map(userPlace ->
-                        PlaceResponseDTO.BookMarkPlaceDTO.builder()
-                                .placeId(userPlace.getId())
-                                .name(userPlace.getPlace().getName())
-                                .address(userPlace.getPlace().getAddress())
-                                .img(userPlace.getPlace().getUrl())
-                                .build()
-                ).toList())
+                .bookmarkPlaceList(userPlaces.getContent().stream().map(userPlace -> {
+                    Place place = userPlace.getPlace();
+                    String imgUrl = place.getPlaceImgList().stream()
+                            .findFirst()
+                            .map(PlaceImg::getUrl)
+                            .orElse(null);
+
+                    return PlaceResponseDTO.BookMarkPlaceDTO.builder()
+                            .placeId(userPlace.getId())
+                            .name(place.getName())
+                            .address(place.getAddress())
+                            .img(imgUrl)
+                            .build();
+                }).toList())
                 .listSize(userPlaces.getNumberOfElements())
                 .totalPage(userPlaces.getTotalPages())
                 .totalElements(userPlaces.getTotalElements())
@@ -111,6 +118,7 @@ public class PlaceConverter {
                 .isLast(userPlaces.isLast())
                 .build();
     }
+
 
     public static Place withUpdatedCongestion(Place place, Congestion newCongestion) {
         return Place.builder()
