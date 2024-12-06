@@ -11,7 +11,7 @@ echo "Found JAR file: $JAR_FILE"
 PID=$(pgrep -f $JAR_FILE) # JAR 파일의 PID 가져오기
 if [ -n "$PID" ]; then
   echo "Killing running application with PID: $PID"
-  kill -9 $PID
+  sudo kill -9 $PID
   sleep 2
 else
   echo "No running application found."
