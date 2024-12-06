@@ -40,5 +40,7 @@ public interface PlaceRepository extends JpaRepository<Place, Long> {
             "OR (LOWER(p.address) LIKE LOWER(CONCAT('%', :search, '%')))")
     Page<Place> findByNameContainingOrAddressContaining(@Param("search") String search, PageRequest pageRequest);
 
-    Page<Place> findByMood1OrMood2(Mood mood1, Mood mood2, Pageable pageable);
+    @Query("SELECT p FROM Place p WHERE (p.mood1 = :mood OR p.mood2 = :mood) AND (p.mood1 IS NOT NULL AND p.mood2 IS NOT NULL)")
+    Page<Place> findByMood(Pageable pageable, @Param("mood") Mood mood);
+
 }
