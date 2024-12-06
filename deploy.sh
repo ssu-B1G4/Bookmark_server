@@ -17,8 +17,13 @@ else
   echo "No running application found."
 fi
 
+# .env 파일 로드
+if [ -f "/etc/environment" ]; then
+  export $(grep -v '^#' /etc/environment | xargs)
+fi
+
 echo "Starting new application: $JAR_FILE"
-sudo -E nohup java -jar $JAR_FILE > $LOG_FILE 2>&1 &
+nohup java -jar $JAR_FILE > $LOG_FILE 2>&1 &
 if [ $? -eq 0 ]; then
   echo "Application started successfully."
   echo "Logs can be found in: $LOG_FILE"
