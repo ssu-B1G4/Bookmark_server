@@ -18,7 +18,7 @@ else
 fi
 
 echo "Starting new application: $JAR_FILE"
-nohup java -jar $JAR_FILE > $LOG_FILE 2>&1 &
+sudo -E nohup java -jar $JAR_FILE > $LOG_FILE 2>&1 &
 if [ $? -eq 0 ]; then
   echo "Application started successfully."
   echo "Logs can be found in: $LOG_FILE"
