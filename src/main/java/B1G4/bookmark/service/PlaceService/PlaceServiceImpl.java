@@ -334,8 +334,7 @@ public class PlaceServiceImpl implements PlaceService{
         PageRequest pageable = PageRequest.of((page-1), 10);
 
         // 사용자의 선호 분위기와 일치하는 장소를 조회
-        Page<Place> places = placeRepository.findByMood1OrMood2(member.getMood(), member.getMood(), pageable);
-
+        Page<Place> places = placeRepository.findByMood(pageable, member.getMood());
         // `PlaceConverter`를 사용하여 `PlacePreviewListDTO`로 변환
         return PlaceConverter.toPlacePreviewList(places, member, memberService, placeImgRepository);
     }
