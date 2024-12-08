@@ -56,6 +56,7 @@ public enum ErrorStatus implements BaseErrorCode {
     UNBOOKMARK_FAILED(HttpStatus.BAD_REQUEST, "PLACE_010", "해당 공간 북마크 해제에 실패하였습니다."),
     USERPLACE_NOT_FOUND(HttpStatus.BAD_REQUEST, "PLACE_011", "해당 유저의 저장 공간이 존재하지 않습니다."),
     PLACE_NOT_FOUND(HttpStatus.BAD_REQUEST, "PLACE_012", "해당 공간이 존재하지 않습니다."),
+    PLACE_CLOSED(HttpStatus.BAD_REQUEST, "PLACE_013", "해당 공간은 오늘 휴무일입니다."),
 
     ;
 
