@@ -1,5 +1,6 @@
 package B1G4.bookmark.service.ChatRoomService;
 
+import B1G4.bookmark.domain.ChatRoom;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.repository.ChatRoomRepository;
 import B1G4.bookmark.repository.MemberRepository;
