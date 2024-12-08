@@ -2,11 +2,16 @@ package B1G4.bookmark.security.provider;
 
 import java.nio.charset.StandardCharsets;
 import java.time.ZonedDateTime;
+import java.util.Collections;
 import java.util.Date;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Component;
 
 import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
@@ -82,5 +87,14 @@ public class JwtTokenProvider {
 
     private Jws<Claims> getClaims(String token) {
         return Jwts.parserBuilder().setSigningKey(secretKey).build().parseClaimsJws(token);
+    }
+
+    public Authentication getAuthentication(String token) {
+        Long memberId = getId(token); // Extract member ID from JWT
+        // Create a UserDetails-like principal (username, password, authorities)
+        User principal = new User(memberId.toString(), "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+
+        // Create an Authentication object using principal, credentials, and authorities
+        return new UsernamePasswordAuthenticationToken(principal, token, principal.getAuthorities());
     }
 }
