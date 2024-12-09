@@ -33,7 +33,8 @@ public class SecurityConfig {
             "/v3/api-docs/**",
             "/login",
             "/refresh",
-            "/actuator/prometheus"
+            "/actuator/prometheus",
+            "/ws/**",
     };
 
     @Bean
