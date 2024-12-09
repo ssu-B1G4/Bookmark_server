@@ -1,5 +1,6 @@
 package B1G4.bookmark.config;
 
+import B1G4.bookmark.apiPayload.exception.handler.StompHandler;
 import B1G4.bookmark.security.provider.JwtTokenProvider;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Configuration;
@@ -23,7 +24,9 @@ import java.util.Objects;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
+    private final StompHandler stompHandler;
     private final JwtTokenProvider jwtTokenProvider;
+
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
         config.enableSimpleBroker("/topic"); // 구독 경로
@@ -49,7 +52,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         StompCommand.SEND.equals(accessor.getCommand())) {
 
                     String token = accessor.getFirstNativeHeader("Authorization");
-
                     if (Objects.nonNull(token) && token.startsWith("Bearer ")) {
                         token = token.substring(7); // "Bearer " 제거
                         try {
@@ -64,6 +66,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             }
         });
     }
-
 }
 
