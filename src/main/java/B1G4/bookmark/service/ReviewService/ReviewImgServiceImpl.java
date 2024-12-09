@@ -4,6 +4,7 @@ import B1G4.bookmark.domain.Review;
 import B1G4.bookmark.domain.ReviewImg;
 import B1G4.bookmark.repository.ReviewImgRepository;
 import B1G4.bookmark.repository.ReviewRepository;
+import B1G4.bookmark.service.S3Service.S3ImageService;
 import B1G4.bookmark.service.S3Service.S3ImageServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class ReviewImgServiceImpl implements ReviewImgService {
 
     private final ReviewImgRepository reviewImgRepository;
     private final ReviewRepository reviewRepository;
-    private final S3ImageServiceImpl s3ImageService;
+    private final S3ImageService s3ImageService;
 
     // 이미지 저장
     public void uploadImage(Long reviewId, List<MultipartFile> images) {

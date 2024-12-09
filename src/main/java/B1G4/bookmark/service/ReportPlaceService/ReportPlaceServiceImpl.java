@@ -4,6 +4,7 @@ import B1G4.bookmark.converter.ReportPlaceConverter;
 import B1G4.bookmark.domain.Member;
 import B1G4.bookmark.domain.ReportPlace;
 import B1G4.bookmark.repository.ReportPlaceRepository;
+import B1G4.bookmark.service.S3Service.S3ImageService;
 import B1G4.bookmark.service.S3Service.S3ImageServiceImpl;
 import B1G4.bookmark.web.dto.ReportPlaceDTO.ReportPlaceRequestDTO;
 import B1G4.bookmark.web.dto.ReportPlaceDTO.ReportPlaceResponseDTO;
@@ -27,7 +28,7 @@ import java.util.UUID;
 public class ReportPlaceServiceImpl implements ReportPlaceService {
 
     private final ReportPlaceRepository reportPlaceRepository;
-    private final S3ImageServiceImpl s3ImageService;
+    private final S3ImageService s3ImageService;
 
     public ReportPlaceResponseDTO createReportPlace(ReportPlaceRequestDTO requestDTO, List<MultipartFile> images, Member member) {
         List<String> imageUrls = uploadImages(images);
