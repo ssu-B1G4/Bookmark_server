@@ -90,15 +90,13 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        Claims claims = Jwts.parserBuilder()
-                .setSigningKey(secretKey)
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
-
-        String userId = claims.get("id", String.class);
-        User user = new User(userId, "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
-        return new UsernamePasswordAuthenticationToken(user, token, user.getAuthorities());
+        try {
+            Long memberId = getId(token); // Extract member ID from JWT
+            User principal = new User(memberId.toString(), "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+            return new UsernamePasswordAuthenticationToken(principal, token, principal.getAuthorities());
+        } catch (Exception e) {
+            throw new AuthException(ErrorStatus.AUTH_INVALID_TOKEN);
+        }
     }
 
     public void validateToken(String token) {
