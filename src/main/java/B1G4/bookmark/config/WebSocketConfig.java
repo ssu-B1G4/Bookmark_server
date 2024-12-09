@@ -44,15 +44,20 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
             public Message<?> preSend(Message<?> message, MessageChannel channel) {
                 StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
 
-                if (StompCommand.CONNECT.equals(accessor.getCommand())) {
-                    // STOMP 연결 요청에서 Authorization 헤더 추출
+                if (StompCommand.CONNECT.equals(accessor.getCommand()) ||
+                        StompCommand.SUBSCRIBE.equals(accessor.getCommand()) ||
+                        StompCommand.SEND.equals(accessor.getCommand())) {
+
                     String token = accessor.getFirstNativeHeader("Authorization");
 
                     if (Objects.nonNull(token) && token.startsWith("Bearer ")) {
                         token = token.substring(7); // "Bearer " 제거
-                        Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                        accessor.setUser(authentication);
-                        SecurityContextHolder.getContext().setAuthentication(authentication);
+                        try {
+                            Authentication authentication = jwtTokenProvider.getAuthentication(token);
+                            accessor.setUser(authentication); // 사용자 정보 추가
+                        } catch (Exception e) {
+                            System.out.println("WebSocket Authentication failed: " + e.getMessage());
+                        }
                     }
                 }
                 return message;
