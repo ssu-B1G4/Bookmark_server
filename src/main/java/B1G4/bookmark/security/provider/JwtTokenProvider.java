@@ -98,4 +98,23 @@ public class JwtTokenProvider {
             throw new AuthException(ErrorStatus.AUTH_INVALID_TOKEN);
         }
     }
+
+    public void validateToken(String token) {
+        try {
+            Jws<Claims> claims = getClaims(token);
+            Date expiration = claims.getBody().getExpiration();
+            Date now = new Date();
+
+            if (expiration.before(now)) {
+                throw new AuthException(ErrorStatus.AUTH_EXPIRED_TOKEN);
+            }
+        } catch (ExpiredJwtException e) {
+            throw new AuthException(ErrorStatus.AUTH_EXPIRED_TOKEN);
+        } catch (SecurityException
+                 | MalformedJwtException
+                 | UnsupportedJwtException
+                 | IllegalArgumentException e) {
+            throw new AuthException(ErrorStatus.AUTH_INVALID_TOKEN);
+        }
+    }
 }
