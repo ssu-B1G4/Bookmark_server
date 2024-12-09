@@ -1,5 +1,7 @@
 package B1G4.bookmark.service.CongestionService;
 
+import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
+import B1G4.bookmark.apiPayload.exception.handler.PlaceHandler;
 import B1G4.bookmark.converter.CongestionConverter;
 import B1G4.bookmark.domain.Congestion;
 import B1G4.bookmark.domain.OperatingTime;
@@ -38,8 +40,14 @@ public class CongestionServiceImpl implements CongestionService {
 
         OperatingTime operatingTime = operatingTimeRepository.findByPlaceAndDayOfWeek(place, currentDay);
 
-        LocalTime openTime = operatingTime.getOpenTime();
-        LocalTime closeTime = operatingTime.getCloseTime();
+        LocalTime openTime;
+        LocalTime closeTime;
+        try {
+            openTime = operatingTime.getOpenTime();
+            closeTime = operatingTime.getCloseTime();
+        }catch (Exception e){
+            throw new PlaceHandler(ErrorStatus.PLACE_CLOSED);
+        }
 
         Congestion congestion = place.getCongestion();
         if (congestion == null) {

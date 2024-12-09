@@ -1,5 +1,7 @@
 package B1G4.bookmark.converter;
 
+import B1G4.bookmark.apiPayload.code.status.ErrorStatus;
+import B1G4.bookmark.apiPayload.exception.handler.PlaceHandler;
 import B1G4.bookmark.domain.Congestion;
 import B1G4.bookmark.domain.Place;
 import B1G4.bookmark.web.dto.CongestionDTO.CongestionResponseDTO;
@@ -101,6 +103,12 @@ public class CongestionConverter {
 
     public static List<CongestionResponseDTO.HourValueDTO> filterAndRoundCongestion(Congestion congestion, LocalTime openTime, LocalTime closeTime) {
         List<CongestionResponseDTO.HourValueDTO> congestionData = new ArrayList<>();
+
+        try{
+            int hour = openTime.getHour();
+        }catch (Exception e){
+            throw new PlaceHandler(ErrorStatus.PLACE_CLOSED);
+        }
 
         for (int hour = openTime.getHour(); hour <= closeTime.getHour(); hour++) {
             float congestionLevel = getCongestionLevel(congestion, hour);
