@@ -90,11 +90,12 @@ public class JwtTokenProvider {
     }
 
     public Authentication getAuthentication(String token) {
-        Long memberId = getId(token); // Extract member ID from JWT
-        // Create a UserDetails-like principal (username, password, authorities)
-        User principal = new User(memberId.toString(), "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
-
-        // Create an Authentication object using principal, credentials, and authorities
-        return new UsernamePasswordAuthenticationToken(principal, token, principal.getAuthorities());
+        try {
+            Long memberId = getId(token); // Extract member ID from JWT
+            User principal = new User(memberId.toString(), "", Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER")));
+            return new UsernamePasswordAuthenticationToken(principal, token, principal.getAuthorities());
+        } catch (Exception e) {
+            throw new AuthException(ErrorStatus.AUTH_INVALID_TOKEN);
+        }
     }
 }
