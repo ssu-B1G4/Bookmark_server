@@ -22,47 +22,6 @@ public class ChatController {
 
     private final ChatRoomServiceImpl chatRoomService;
 
-
-    // Swagger용 가짜 채팅방 입장 API
-    @Operation(
-            summary = "채팅방 입장",
-            description = "사용자가 특정 채팅방에 입장합니다. 이 경로는 WebSocket 동작을 설명하기 위해 추가된 가짜 API입니다." +
-                    "클라이언트는 /app/chat/{chatRoomId}/join으로 메시지를 발행합니다. "+
-                    "서버는 /topic/chat/{chatRoomId}로 구독 중인 모든 클라이언트에게 메시지를 브로드캐스트합니다."
-    )
-    @PostMapping("/swagger/chat/{chatRoomId}/join")
-    public BaseResponse<ChatMessageDTO> joinChatRoomSwagger(
-            @DestinationVariable @Parameter(
-                    description = "입장할 채팅방의 ID" + "채팅방 ID는 공간 ID와 같습니다",
-                    required = true
-            ) Long chatRoomId,
-            @Parameter(name = "user", hidden = true)
-            @AuthUser Member member) {
-        ChatMessageDTO result = chatRoomService.handleJoinChatRoom(chatRoomId, member.getId());
-        return BaseResponse.onSuccess(result);
-    }
-
-    // Swagger용 가짜 메시지 전송 API
-    @Operation(
-            summary = "메시지 전송",
-            description = "사용자가 특정 채팅방에 메시지를 전송합니다. 이 경로는 WebSocket 동작을 설명하기 위해 추가된 가짜 API입니다." +
-                    "클라이언트는 /app/chat/{chatRoomId}/send로 메시지를 발행합니다." +
-                    "서버는 /topic/chat/{chatRoomId}로 구독 중인 모든 클라이언트에게 메시지를 브로드캐스트합니다."
-
-    )
-    @PostMapping("/swagger/chat/{chatRoomId}/send")
-    public BaseResponse<ChatMessageDTO> sendMessageSwagger(
-            @DestinationVariable @Parameter(
-                    description = "메시지를 전송할 채팅방의 ID" + "채팅방 ID는 공간ID와 같습니다",
-                    required = true
-            ) Long chatRoomId,
-            @RequestBody @Parameter(
-                    description = "전송할 메시지의 정보",
-                    required = true
-            ) ChatMessageDTO messageDTO) {
-        return BaseResponse.onSuccess(chatRoomService.handleSendMessage(chatRoomId, messageDTO));
-    }
-
     // 채팅방 입장
     /**
      * 채팅방 입장

@@ -42,29 +42,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     @Override
     public void configureClientInboundChannel(ChannelRegistration registration) {
-        registration.interceptors(new ChannelInterceptor() {
-            @Override
-            public Message<?> preSend(Message<?> message, MessageChannel channel) {
-                StompHeaderAccessor accessor = StompHeaderAccessor.wrap(message);
-
-                if (StompCommand.CONNECT.equals(accessor.getCommand()) ||
-                        StompCommand.SUBSCRIBE.equals(accessor.getCommand()) ||
-                        StompCommand.SEND.equals(accessor.getCommand())) {
-
-                    String token = accessor.getFirstNativeHeader("Authorization");
-                    if (Objects.nonNull(token) && token.startsWith("Bearer ")) {
-                        token = token.substring(7); // "Bearer " 제거
-                        try {
-                            Authentication authentication = jwtTokenProvider.getAuthentication(token);
-                            accessor.setUser(authentication); // 사용자 정보 추가
-                        } catch (Exception e) {
-                            System.out.println("WebSocket Authentication failed: " + e.getMessage());
-                        }
-                    }
-                }
-                return message;
-            }
-        });
+        registration.interceptors(stompHandler); // StompHandler 추가
     }
 }
 
